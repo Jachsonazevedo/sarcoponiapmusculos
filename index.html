@@ -1,439 +1,49 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { 
-  ChevronLeft, 
-  ChevronRight, 
-  CheckCircle, 
-  AlertTriangle, 
-  Activity, 
-  Moon, 
-  Utensils, 
-  Share2,
-  Brain,
-  Coffee,
-  Sun,
-  Sunset,
-  Plus,
-  Minus,
-  Edit3,
-  RefreshCw,
-  Download,
-  Calendar,
-  User,
-  Target
-} from 'lucide-react';
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Schola da Mente – Conectando a Mente com a Vida</title>
 
-/**
- * ==========================================
- * BASE DE DADOS
- * ==========================================
- */
-const FOOD_DB = [
-  { id: 'b1', name: "Carne bovina cozida", portion: "100 g", protein: 26, category: 'carnes' },
-  { id: 'b2', name: "Carne bovina grelhada", portion: "100 g", protein: 28, category: 'carnes' },
-  { id: 'b4', name: "Carne moída refogada", portion: "100 g", protein: 25, category: 'carnes' },
-  { id: 'a1', name: "Peito de frango cozido", portion: "100 g", protein: 31, category: 'aves' },
-  { id: 'a2', name: "Peito de frango grelhado", portion: "100 g", protein: 32, category: 'aves' },
-  { id: 'a4', name: "Frango desfiado", portion: "100 g", protein: 30, category: 'aves' },
-  { id: 'o1', name: "Ovo cozido", portion: "1 unidade", protein: 6, category: 'ovos' },
-  { id: 'o3', name: "Ovos mexidos", portion: "2 unidades", protein: 12, category: 'ovos' },
-  { id: 'p1', name: "Tilápia assada", portion: "100 g", protein: 26, category: 'peixes' },
-  { id: 'v1', name: "Feijão carioca cozido", portion: "1 concha", protein: 8, category: 'vegetais' },
-  { id: 'v2', name: "Feijão preto cozido", portion: "1 concha", protein: 9, category: 'vegetais' },
-  { id: 'v3', name: "Lentilha cozida", portion: "1 concha", protein: 9, category: 'vegetais' },
-  { id: 'sup1', name: "Whey Protein", portion: "1 scoop (30g)", protein: 24, category: 'suplementos' },
-  { id: 'sup4', name: "Iogurte grego", portion: "1 pote", protein: 15, category: 'laticinios' },
-  { id: 'n2', name: "Castanha de caju", portion: "30 g", protein: 5, category: 'snack' },
-];
+    <!-- Tailwind (caso você use) -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
-const EXERCISE_DB = [
-  { id: "remo_maquina", name: "Remo", description: "Força e cardio.", default_duration: "15 min", intensity: "high" },
-  { id: "flexoes_parede", name: "Flexões na parede", description: "Peitoral seguro.", default_duration: "3x10 reps", intensity: "light" },
-  { id: "agachamento_cadeira", name: "Agachamento Cadeira", description: "Sentar/levantar.", default_duration: "3x10 reps", intensity: "moderate" },
-  { id: "caminhada", name: "Caminhada", description: "Cardio leve.", default_duration: "30 min", intensity: "moderate" },
-  { id: "musculacao_livre", name: "Musculação", description: "Pesos livres.", default_duration: "45 min", intensity: "high" }
-];
+    <!-- html2pdf (carregado aqui, não dentro do React!) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-const REST_DB = [
-  { id: "sono_8h", name: "Sono 7–8h", description: "Recuperação muscular.", type: "biologico" },
-  { id: "higiene_sono", name: "Higiene do Sono", description: "Sem telas 1h antes.", type: "habito" },
-  { id: "caca_palavras", name: "Caça Palavras", description: "Cognitivo ativo.", type: "cognitivo" },
-  { id: "sesta", name: "Sesta (20min)", description: "Descanso pós-almoço.", type: "biologico" }
-];
-
-// LÓGICA E TIPOS
-export interface CalcInput { name: string; weightKg: number; heightCm: number; age: number; sex: 'M' | 'F' | 'O'; objective: 'prevent' | 'moderate' | 'aggressive'; activityLevel: 'sedentary' | 'light' | 'moderate' | 'intense'; mealsPerDay: number; medicalFlags: string[]; }
-export interface CalcOutput { weightUsed: number; factor: number; proteinDaily: number; proteinPerMeal: number; warnings: string[]; }
-interface PlanItemFood { foodId: string; portions: number; meal: 'cafe' | 'almoco' | 'jantar' | 'snack'; }
-interface PlanState { food: PlanItemFood[]; movement: string[]; rest: string[]; extraFactorConfirmed: boolean; }
-
-const calculateNeeds = (input: CalcInput, extraFactorConfirmed: boolean): CalcOutput | null => {
-  if (input.medicalFlags.includes('renal_insufficiency')) return null;
-  let factor = 1.4;
-  if (input.objective === 'moderate') factor = 1.6;
-  if (input.objective === 'aggressive') factor = 1.8;
-  if (input.activityLevel === 'intense' || extraFactorConfirmed) factor += 0.1;
-  if (factor > 2.5) factor = 2.5;
-  const proteinDaily = Math.round(input.weightKg * factor);
-  const proteinPerMeal = Math.round((proteinDaily / input.mealsPerDay) * 10) / 10;
-  return { weightUsed: input.weightKg, factor: Math.round(factor * 100) / 100, proteinDaily, proteinPerMeal, warnings: [] };
-};
-
-// COMPONENTES UI
-const Button = ({ onClick, children, variant = 'primary', className = '', icon: Icon, disabled = false, loading = false }: any) => {
-  const baseStyle = "flex items-center justify-center gap-2 font-bold text-lg rounded-xl transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed";
-  const variants = {
-    primary: "bg-slate-900 text-white hover:bg-black py-3 px-6",
-    secondary: "bg-gray-200 text-gray-800 hover:bg-gray-300 py-3 px-6",
-    outline: "border-2 border-slate-700 text-slate-700 hover:bg-slate-50 py-2 px-4",
-  };
-  return <button onClick={onClick} disabled={disabled || loading} className={`${baseStyle} ${variants[variant as keyof typeof variants]} ${className}`}>{loading ? <RefreshCw className="animate-spin" size={20} /> : <>{Icon && <Icon size={20} />}{children}</>}</button>;
-};
-
-const Card = ({ children, className = '' }: any) => <div className={`bg-white p-5 rounded-2xl shadow-sm border border-gray-200 ${className}`}>{children}</div>;
-const InputField = ({ label, type = "text", value, onChange, placeholder, suffix }: any) => (
-  <div className="mb-4"><label className="block text-gray-700 font-bold mb-1 text-lg">{label}</label><div className="relative"><input type={type} value={value} onChange={onChange} placeholder={placeholder} className="w-full bg-gray-50 border-2 border-gray-200 rounded-xl p-3 text-xl font-medium focus:border-slate-800 focus:outline-none transition-colors" />{suffix && <span className="absolute right-4 top-4 text-gray-400 font-bold">{suffix}</span>}</div></div>
-);
-
-export default function App() {
-  const [step, setStep] = useState(1);
-  const [input, setInput] = useState<CalcInput>({ name: '', weightKg: 0, heightCm: 0, age: 0, sex: 'F', objective: 'prevent', activityLevel: 'light', mealsPerDay: 3, medicalFlags: [] });
-  const [plan, setPlan] = useState<PlanState>({ food: [], movement: [], rest: [], extraFactorConfirmed: false });
-  const [isGenerating, setIsGenerating] = useState(false);
-  const pdfRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js";
-    script.async = true;
-    document.body.appendChild(script);
-    return () => { if(script.parentNode) script.parentNode.removeChild(script); }
-  }, []);
-
-  const result = useMemo(() => calculateNeeds(input, plan.extraFactorConfirmed), [input, plan.extraFactorConfirmed]);
-  const totalProteinSelected = useMemo(() => plan.food.reduce((acc, item) => acc + (FOOD_DB.find(f => f.id === item.foodId)?.protein || 0) * item.portions, 0), [plan.food]);
-  const proteinGap = result ? result.proteinDaily - totalProteinSelected : 0;
-
-  const handleInputChange = (field: keyof CalcInput, value: any) => setInput(prev => ({ ...prev, [field]: value }));
-  const toggleMedicalFlag = (flag: string) => setInput(prev => ({ ...prev, medicalFlags: prev.medicalFlags.includes(flag) ? prev.medicalFlags.filter(f => f !== flag) : [...prev.medicalFlags, flag] }));
-  const checkRenalBlock = () => { if (input.medicalFlags.includes('renal_insufficiency')) setStep(99); else setStep(3); };
-  
-  const updateFood = (foodId: string, meal: PlanItemFood['meal'], delta: number) => {
-    setPlan(prev => {
-      const existing = prev.food.find(i => i.foodId === foodId && i.meal === meal);
-      if (existing) {
-        const newPortions = existing.portions + delta;
-        return newPortions <= 0 ? { ...prev, food: prev.food.filter(i => !(i.foodId === foodId && i.meal === meal)) } : { ...prev, food: prev.food.map(i => i.foodId === foodId && i.meal === meal ? { ...i, portions: newPortions } : i) };
+    <style>
+      /* Impede que o container invisível afete o layout visual */
+      #pdf-container {
+        display: none !important;
+        visibility: hidden !important;
+        pointer-events: none;
       }
-      return delta > 0 ? { ...prev, food: [...prev.food, { foodId, meal, portions: 1 }] } : prev;
-    });
-  };
+    </style>
+  </head>
 
-  const toggleExercise = (ex: typeof EXERCISE_DB[0]) => {
-    const isSelected = plan.movement.includes(ex.id);
-    if (!isSelected && ex.intensity === 'high' && !plan.extraFactorConfirmed && input.activityLevel !== 'intense') {
-      if (window.confirm("Exercício intenso selecionado. Aumentar proteína (+0.1 g/kg)?")) {
-        setPlan(prev => ({ ...prev, movement: [...prev.movement, ex.id], extraFactorConfirmed: true }));
-        return;
-      }
-    }
-    setPlan(prev => ({ ...prev, movement: isSelected ? prev.movement.filter(i => i !== ex.id) : [...prev.movement, ex.id] }));
-  };
+  <body class="bg-slate-50">
 
-  const toggleRest = (id: string) => setPlan(prev => ({ ...prev, rest: prev.rest.includes(id) ? prev.rest.filter(i => i !== id) : [...prev.rest, id] }));
-  const resetApp = () => { setStep(1); setPlan({ food: [], movement: [], rest: [], extraFactorConfirmed: false }); };
+    <!-- ROOT DO REACT -->
+    <div id="root"></div>
 
-  const generatePDFBlob = async () => {
-    // @ts-ignore
-    if (typeof window.html2pdf === 'undefined' || !pdfRef.current) return null;
-    const element = pdfRef.current;
-    const opt = {
-      margin: 0,
-      filename: `Plano_Schola_${input.name}.pdf`,
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
-    // @ts-ignore
-    return await window.html2pdf().set(opt).from(element).output('blob');
-  };
+    <!-- CONTAINER INVISÍVEL DO PDF (Fora do React, não quebra nada!) -->
+    <div id="pdf-container">
+      <div id="pdf-content" style="
+          width: 794px;
+          min-height: 1123px;
+          background: white;
+          padding: 30px;
+          font-family: Arial, sans-serif;
+          color: #1e293b;
+        ">
 
-  const handleDownloadPDF = async () => {
-    setIsGenerating(true);
-    setTimeout(async () => {
-      try {
-        const blob = await generatePDFBlob();
-        if (blob) {
-          const url = URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = url;
-          link.download = `Plano_${input.name}.pdf`;
-          link.click();
-        }
-      } catch (e) { alert("Erro ao gerar PDF."); }
-      setIsGenerating(false);
-    }, 500);
-  };
+        <!-- React irá preencher esse conteúdo dinamicamente via pdfRef -->
 
-  const handleSharePDF = async () => {
-    setIsGenerating(true);
-    setTimeout(async () => {
-      try {
-        const blob = await generatePDFBlob();
-        if (blob && navigator.share) {
-          const file = new File([blob], `Plano.pdf`, { type: 'application/pdf' });
-          await navigator.share({ files: [file], title: 'Meu Plano Schola' });
-        } else { handleDownloadPDF(); }
-      } catch (e) { handleDownloadPDF(); }
-      setIsGenerating(false);
-    }, 500);
-  };
-
-  const Header = () => (
-    <header className="fixed top-0 left-0 w-full bg-slate-900 text-white py-4 z-50 shadow-md">
-      <div className="max-w-3xl mx-auto px-4 flex items-center gap-3">
-        <Brain className="text-blue-300" size={28} />
-        <div>
-          <h1 className="font-bold text-lg leading-tight">Schola da Mente</h1>
-          <p className="text-xs text-blue-200 uppercase tracking-wider">Conectando a Mente com a Vida</p>
-        </div>
-      </div>
-    </header>
-  );
-
-  useEffect(() => window.scrollTo(0,0), [step]);
-
-  // Estilo oculto para o container do PDF (Correção Solicitada)
-  const hiddenStyle = {
-    display: 'none',
-  };
-
-  return (
-    <div className="font-sans text-slate-900 bg-slate-50 min-h-screen relative">
-      
-      {/* TEMPLATE PDF - CORREÇÃO DEFINITIVA: Container invisível sem afetar layout */}
-      <div style={hiddenStyle}>
-        <div ref={pdfRef} style={{ width: '794px', minHeight: '1123px', backgroundColor: 'white', padding: '30px', fontFamily: 'Arial, sans-serif', color: '#1e293b' }}>
-           
-           {/* HEADER - TABLE LAYOUT */}
-           <table style={{ width: '100%', borderBottom: '4px solid #0f172a', paddingBottom: '20px', marginBottom: '20px' }}>
-             <tbody>
-               <tr>
-                 <td style={{ verticalAlign: 'middle' }}>
-                   <h1 style={{ fontSize: '32px', fontWeight: '900', margin: 0, lineHeight: 1 }}>Schola da Mente</h1>
-                   <p style={{ fontSize: '12px', textTransform: 'uppercase', letterSpacing: '2px', color: '#64748b', margin: '5px 0 0 0' }}>Conectando a Mente com a Vida</p>
-                 </td>
-                 <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>
-                   <div style={{ backgroundColor: '#f1f5f9', padding: '10px 15px', borderRadius: '8px', display: 'inline-block' }}>
-                     <p style={{ fontSize: '10px', fontWeight: 'bold', textTransform: 'uppercase', color: '#64748b', margin: 0 }}>Objetivo</p>
-                     <p style={{ fontSize: '14px', fontWeight: 'bold', color: '#1e3a8a', margin: '2px 0 0 0' }}>Prevenção da Sarcopenia</p>
-                     <p style={{ fontSize: '10px', fontWeight: 'bold', color: '#dc2626', margin: '2px 0 0 0', textTransform: 'uppercase' }}>(Perda de Músculos)</p>
-                   </div>
-                 </td>
-               </tr>
-             </tbody>
-           </table>
-
-           {/* USER CARD - TABLE LAYOUT */}
-           <table style={{ width: '100%', backgroundColor: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '12px', marginBottom: '25px', borderSpacing: 0 }}>
-             <tbody>
-               <tr>
-                 <td style={{ padding: '20px', width: '50%', verticalAlign: 'top', borderRight: '1px solid #e2e8f0' }}>
-                    <p style={{ fontSize: '10px', fontWeight: 'bold', textTransform: 'uppercase', color: '#64748b', margin: 0 }}>Plano Personalizado Para</p>
-                    <p style={{ fontSize: '24px', fontWeight: '900', color: '#0f172a', margin: '5px 0 10px 0' }}>{input.name || 'Participante'}</p>
-                    <div>
-                      <span style={{ display: 'inline-block', backgroundColor: 'white', border: '1px solid #e2e8f0', padding: '4px 8px', borderRadius: '4px', fontSize: '12px', fontWeight: '500', marginRight: '5px' }}>{input.age} anos</span>
-                      <span style={{ display: 'inline-block', backgroundColor: 'white', border: '1px solid #e2e8f0', padding: '4px 8px', borderRadius: '4px', fontSize: '12px', fontWeight: '500', marginRight: '5px' }}>{input.weightKg} kg</span>
-                      <span style={{ display: 'inline-block', backgroundColor: 'white', border: '1px solid #e2e8f0', padding: '4px 8px', borderRadius: '4px', fontSize: '12px', fontWeight: '500' }}>{new Date().toLocaleDateString()}</span>
-                    </div>
-                 </td>
-                 <td style={{ padding: '20px', width: '50%', verticalAlign: 'middle', textAlign: 'right' }}>
-                    <p style={{ fontSize: '10px', fontWeight: 'bold', textTransform: 'uppercase', color: '#64748b', margin: 0 }}>Meta Diária Calculada</p>
-                    <p style={{ fontSize: '36px', fontWeight: '900', color: '#0f172a', margin: '0' }}>{result?.proteinDaily}g</p>
-                    <p style={{ fontSize: '12px', fontWeight: 'bold', color: proteinGap > 0 ? '#ea580c' : '#16a34a', margin: '5px 0 0 0' }}>
-                      {proteinGap > 0 ? `Falta planejar: ${Math.round(proteinGap)}g` : "Meta Atingida com Sucesso!"}
-                    </p>
-                 </td>
-               </tr>
-             </tbody>
-           </table>
-
-           {/* 1. ALIMENTAÇÃO - TABLE */}
-           <div style={{ marginBottom: '25px' }}>
-              <div style={{ backgroundColor: '#1e3a8a', color: 'white', padding: '10px 15px', borderRadius: '8px 8px 0 0', fontSize: '14px', fontWeight: 'bold' }}>
-                1. Plano Alimentar
-              </div>
-              <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #e2e8f0', borderTop: 'none', borderRadius: '0 0 8px 8px', fontSize: '12px' }}>
-                <thead style={{ backgroundColor: '#f1f5f9', color: '#475569' }}>
-                  <tr>
-                    <th style={{ textAlign: 'left', padding: '10px', borderBottom: '1px solid #e2e8f0' }}>Refeição</th>
-                    <th style={{ textAlign: 'left', padding: '10px', borderBottom: '1px solid #e2e8f0' }}>Alimento</th>
-                    <th style={{ textAlign: 'right', padding: '10px', borderBottom: '1px solid #e2e8f0' }}>Qtd.</th>
-                    <th style={{ textAlign: 'right', padding: '10px', borderBottom: '1px solid #e2e8f0' }}>Proteína</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {plan.food.map((item, i) => {
-                    const f = FOOD_DB.find(x => x.id === item.foodId);
-                    if(!f) return null;
-                    return (
-                      <tr key={i}>
-                        <td style={{ padding: '8px 10px', borderBottom: '1px solid #f1f5f9', fontWeight: 'bold', color: '#64748b', textTransform: 'capitalize' }}>{item.meal}</td>
-                        <td style={{ padding: '8px 10px', borderBottom: '1px solid #f1f5f9', fontWeight: 'bold', color: '#0f172a' }}>{f.name}</td>
-                        <td style={{ padding: '8px 10px', borderBottom: '1px solid #f1f5f9', textAlign: 'right' }}>{item.portions}x</td>
-                        <td style={{ padding: '8px 10px', borderBottom: '1px solid #f1f5f9', textAlign: 'right', fontWeight: 'bold' }}>{f.protein * item.portions}g</td>
-                      </tr>
-                    )
-                  })}
-                  <tr style={{ backgroundColor: '#f8fafc' }}>
-                    <td colSpan={3} style={{ padding: '10px', textAlign: 'right', fontWeight: 'bold', color: '#64748b', textTransform: 'uppercase', fontSize: '10px' }}>Total Planejado</td>
-                    <td style={{ padding: '10px', textAlign: 'right', fontWeight: '900', fontSize: '14px', color: '#1e3a8a' }}>{Math.round(totalProteinSelected)}g</td>
-                  </tr>
-                </tbody>
-              </table>
-           </div>
-
-           {/* 2 & 3. MOVIMENTO E DESCANSO - 2 COLUMN TABLE */}
-           <table style={{ width: '100%', borderSpacing: '0 0', marginBottom: '20px' }}>
-             <tbody>
-               <tr>
-                 {/* COL 1: MOVIMENTO */}
-                 <td style={{ width: '48%', verticalAlign: 'top', paddingRight: '2%' }}>
-                    <div style={{ backgroundColor: '#15803d', color: 'white', padding: '8px 15px', borderRadius: '8px 8px 0 0', fontSize: '14px', fontWeight: 'bold' }}>
-                      2. Movimento
-                    </div>
-                    <div style={{ border: '1px solid #e2e8f0', borderTop: 'none', borderRadius: '0 0 8px 8px', padding: '15px', minHeight: '120px', backgroundColor: 'white' }}>
-                      {plan.movement.length === 0 ? <p style={{ fontStyle: 'italic', color: '#94a3b8', fontSize: '12px' }}>Nenhum exercício selecionado.</p> : 
-                        <ul style={{ paddingLeft: '15px', margin: 0 }}>
-                          {plan.movement.map(id => {
-                            const ex = EXERCISE_DB.find(e => e.id === id);
-                            return ex ? <li key={id} style={{ fontSize: '12px', marginBottom: '5px' }}><strong>{ex.name}</strong></li> : null
-                          })}
-                        </ul>
-                      }
-                    </div>
-                 </td>
-                 {/* COL 2: DESCANSO */}
-                 <td style={{ width: '48%', verticalAlign: 'top', paddingLeft: '2%' }}>
-                    <div style={{ backgroundColor: '#4338ca', color: 'white', padding: '8px 15px', borderRadius: '8px 8px 0 0', fontSize: '14px', fontWeight: 'bold' }}>
-                      3. Descanso
-                    </div>
-                    <div style={{ border: '1px solid #e2e8f0', borderTop: 'none', borderRadius: '0 0 8px 8px', padding: '15px', minHeight: '120px', backgroundColor: 'white' }}>
-                      {plan.rest.length === 0 ? <p style={{ fontStyle: 'italic', color: '#94a3b8', fontSize: '12px' }}>Nenhum hábito selecionado.</p> : 
-                        <ul style={{ paddingLeft: '15px', margin: 0 }}>
-                          {plan.rest.map(id => {
-                            const r = REST_DB.find(e => e.id === id);
-                            return r ? <li key={id} style={{ fontSize: '12px', marginBottom: '5px' }}><strong>{r.name}</strong></li> : null
-                          })}
-                        </ul>
-                      }
-                    </div>
-                 </td>
-               </tr>
-             </tbody>
-           </table>
-
-           {/* FOOTER */}
-           <div style={{ borderTop: '2px solid #e2e8f0', paddingTop: '15px', marginTop: 'auto' }}>
-              <div style={{ backgroundColor: '#fefce8', border: '1px solid #fef08a', borderRadius: '8px', padding: '10px', fontSize: '10px', color: '#854d0e', lineHeight: '1.4' }}>
-                <strong>Aviso Importante:</strong> Este documento é gerado automaticamente pelo aplicativo Schola da Mente como uma referência educacional para auxiliar na prevenção da Sarcopenia. Ele não constitui prescrição médica. Consulte sempre um profissional de saúde antes de iniciar dietas ou rotinas de exercícios.
-              </div>
-              <p style={{ textAlign: 'center', fontSize: '10px', fontWeight: 'bold', textTransform: 'uppercase', color: '#94a3b8', marginTop: '10px', letterSpacing: '1px' }}>
-                Schola da Mente © {new Date().getFullYear()}
-              </p>
-           </div>
-
-        </div>
-      </div>
-
-      {/* APP PRINCIPAL */}
-      <div className="relative z-10 bg-slate-50 min-h-screen">
-        {step !== 99 && <Header />}
-
-        {step === 1 && (
-          <div className="pt-8 pb-20 max-w-2xl mx-auto px-4">
-            <div className="bg-blue-100 p-6 rounded-2xl mb-8 border border-blue-200">
-              <h2 className="text-xl font-bold text-blue-900 mb-2">Prevenção da Sarcopenia</h2>
-              <p className="text-blue-800 text-lg">Manter sua força e longevidade exige cuidar de Alimentação, Movimento e Descanso.</p>
-            </div>
-            <Card>
-              <InputField label="Qual seu nome?" value={input.name} onChange={(e:any) => handleInputChange('name', e.target.value)} />
-              <div className="grid grid-cols-2 gap-4">
-                <InputField label="Peso" suffix="kg" type="number" value={input.weightKg || ''} onChange={(e:any) => handleInputChange('weightKg', parseFloat(e.target.value))} />
-                <InputField label="Altura" suffix="cm" type="number" value={input.heightCm || ''} onChange={(e:any) => handleInputChange('heightCm', parseFloat(e.target.value))} />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <InputField label="Idade" type="number" value={input.age || ''} onChange={(e:any) => handleInputChange('age', parseFloat(e.target.value))} />
-                <div className="mb-4"><label className="block text-gray-700 font-bold mb-1 text-lg">Sexo</label><select className="w-full bg-gray-50 border-2 rounded-xl p-3 text-xl" value={input.sex} onChange={(e:any) => handleInputChange('sex', e.target.value)}><option value="F">Feminino</option><option value="M">Masculino</option></select></div>
-              </div>
-            </Card>
-            <div className="fixed bottom-0 left-0 w-full bg-white p-4 border-t flex gap-4 z-50"><Button variant="primary" className="w-full" disabled={!input.name || !input.weightKg} onClick={() => setStep(2)}>Avançar <ChevronRight /></Button></div>
-          </div>
-        )}
-
-        {step === 2 && (
-          <div className="pt-8 pb-32 max-w-2xl mx-auto px-4">
-            <h2 className="text-2xl font-bold text-slate-800 mb-6">Preferências</h2>
-            <Card className="mb-4"><label className="block font-bold text-lg mb-2">Objetivo</label><div className="space-y-2">{[{id:'prevent',l:'Prevenção'},{id:'moderate',l:'Ganho Moderado'},{id:'aggressive',l:'Ganho Agressivo'}].map(o=><div key={o.id} onClick={()=>handleInputChange('objective',o.id)} className={`p-4 rounded-xl border-2 flex justify-between cursor-pointer ${input.objective===o.id?'border-blue-600 bg-blue-50':'border-gray-200'}`}><span className="font-bold">{o.l}</span>{input.objective===o.id&&<CheckCircle className="text-blue-600"/>}</div>)}</div></Card>
-            <Card className="mb-4"><label className="block font-bold text-lg mb-2">Refeições/dia</label><div className="flex gap-4 items-center"><button onClick={()=>handleInputChange('mealsPerDay', Math.max(2,input.mealsPerDay-1))} className="w-10 h-10 bg-gray-200 rounded-full font-bold">-</button><span className="text-2xl font-bold">{input.mealsPerDay}</span><button onClick={()=>handleInputChange('mealsPerDay', Math.min(6,input.mealsPerDay+1))} className="w-10 h-10 bg-slate-900 text-white rounded-full font-bold">+</button></div></Card>
-            <Card className="border-red-100 bg-red-50"><h3 className="font-bold text-red-800 mb-3 flex gap-2"><AlertTriangle/> Condições</h3><label className="flex gap-3 p-3 bg-white rounded-lg mb-2 border"><input type="checkbox" checked={input.medicalFlags.includes('renal_insufficiency')} onChange={()=>toggleMedicalFlag('renal_insufficiency')} className="w-5 h-5 accent-red-600"/><span className="font-medium">Insuficiência Renal</span></label></Card>
-            <div className="fixed bottom-0 left-0 w-full bg-white p-4 border-t flex gap-4 z-50"><Button variant="secondary" className="flex-1" onClick={()=>setStep(1)}>Voltar</Button><Button variant="primary" className="flex-[2]" onClick={checkRenalBlock}>Calcular <ChevronRight/></Button></div>
-          </div>
-        )}
-
-        {step === 99 && (
-          <div className="pt-20 px-4 text-center flex flex-col items-center"><AlertTriangle size={80} className="text-red-600 mb-6"/><h2 className="text-2xl font-bold mb-4">Atenção Médica</h2><p className="text-lg text-slate-600 mb-8">Para insuficiência renal, este plano não substitui orientação médica.</p><Button variant="outline" onClick={()=>setStep(2)}>Voltar</Button></div>
-        )}
-
-        {step === 3 && result && (
-          <div className="pt-8 pb-32 max-w-2xl mx-auto px-4 text-center">
-            <h2 className="text-xl text-slate-600 mb-4">Plano para <span className="font-bold text-slate-900">{input.name}</span></h2>
-            <div className="bg-slate-900 text-white rounded-3xl p-8 shadow-xl mb-6 relative overflow-hidden"><div className="relative z-10"><p className="text-blue-300 font-bold uppercase tracking-widest text-sm mb-2">Meta Diária</p><div className="text-7xl font-extrabold mb-2">{result.proteinDaily}<span className="text-3xl font-normal text-slate-400">g</span></div><div className="grid grid-cols-2 gap-4 border-t border-slate-700 pt-4 mt-4"><div><p className="text-3xl font-bold">{result.proteinPerMeal}g</p><p className="text-xs text-slate-400">Por refeição</p></div><div><p className="text-3xl font-bold">{result.factor}</p><p className="text-xs text-slate-400">g/kg</p></div></div></div><Utensils className="absolute -right-4 top-4 text-white opacity-10" size={140} /></div>
-            <div className="fixed bottom-0 left-0 w-full bg-white p-4 border-t flex gap-4 z-50"><Button variant="secondary" className="flex-1" onClick={()=>setStep(2)}>Voltar</Button><Button variant="primary" className="flex-[2]" onClick={()=>setStep(4)}>Montar Plano <ChevronRight/></Button></div>
-          </div>
-        )}
-
-        {step === 4 && (
-          <div className="pt-8 pb-48 max-w-3xl mx-auto px-4">
-            <div className="fixed top-[60px] left-0 w-full bg-white border-b p-3 z-40 shadow-sm"><div className="max-w-3xl mx-auto flex justify-between mb-2"><div><span className="text-xs font-bold uppercase text-gray-500">Selecionado</span><div className={`text-xl font-bold ${totalProteinSelected < (result?.proteinDaily||0) ? 'text-orange-600' : 'text-green-600'}`}>{Math.round(totalProteinSelected)} / {result?.proteinDaily}g</div></div><div className="text-right"><span className="text-xs font-bold uppercase text-gray-500">Gap</span><div className="text-xl font-bold">{Math.max(0, Math.round(proteinGap))}g</div></div></div><div className="w-full bg-gray-200 h-1.5 rounded-full overflow-hidden"><div className={`h-full transition-all ${totalProteinSelected >= (result?.proteinDaily||0) ? 'bg-green-500' : 'bg-orange-500'}`} style={{width: `${Math.min(100, (totalProteinSelected/(result?.proteinDaily||1))*100)}%`}}/></div></div>
-            <div className="mt-24 space-y-6">
-              {[{id:'cafe',l:'Café',i:Coffee},{id:'almoco',l:'Almoço',i:Sun},{id:'snack',l:'Snacks',i:Coffee},{id:'jantar',l:'Jantar',i:Sunset}].map((m:any) => {
-                const items = plan.food.filter(i => i.meal === m.id);
-                const prot = items.reduce((acc, i) => acc + (FOOD_DB.find(f=>f.id===i.foodId)?.protein || 0)*i.portions, 0);
-                return (
-                  <Card key={m.id}><div className="flex justify-between border-b pb-3 mb-3"><h3 className="font-bold text-lg flex gap-2 items-center"><m.i size={20}/> {m.l}</h3><span className="bg-slate-100 px-2 py-1 rounded text-sm font-bold">{prot}g prot</span></div><div className="space-y-3 mb-4">{items.map(i => { const f = FOOD_DB.find(fo=>fo.id===i.foodId); return f ? <div key={i.foodId} className="flex justify-between items-center bg-blue-50 p-3 rounded-lg"><div><div className="font-bold">{f.name}</div><div className="text-xs text-slate-500">{f.portion} • {f.protein*i.portions}g</div></div><div className="flex gap-3 items-center"><button onClick={()=>updateFood(f.id, m.id, -1)} className="w-8 h-8 bg-white rounded-full border text-red-500 flex items-center justify-center"><Minus size={16}/></button><span className="font-bold">{i.portions}</span><button onClick={()=>updateFood(f.id, m.id, 1)} className="w-8 h-8 bg-white rounded-full border text-green-600 flex items-center justify-center"><Plus size={16}/></button></div></div> : null })}</div><details className="group"><summary className="cursor-pointer list-none text-blue-600 font-bold bg-blue-50 p-2 rounded-lg text-center flex items-center justify-center gap-2"><Plus size={20}/> Adicionar Item</summary><div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-2 max-h-60 overflow-y-auto p-1">{FOOD_DB.map(f => <button key={f.id} onClick={()=>updateFood(f.id, m.id, 1)} className="text-left p-2 border rounded hover:bg-gray-50 flex justify-between"><div><div className="font-bold text-sm">{f.name}</div><div className="text-xs text-gray-500">{f.protein}g</div></div><Plus size={16} className="text-gray-300"/></button>)}</div></details></Card>
-                )
-              })}
-            </div>
-            <div className="fixed bottom-0 left-0 w-full bg-white p-4 border-t flex gap-4 z-50"><Button variant="secondary" className="flex-1" onClick={()=>setStep(3)}>Voltar</Button><Button variant="primary" className="flex-[2]" onClick={()=>setStep(5)}>Movimento <ChevronRight/></Button></div>
-          </div>
-        )}
-
-        {step === 5 && (
-          <div className="pt-8 pb-32 max-w-2xl mx-auto px-4">
-            <h2 className="text-2xl font-bold text-slate-800 mb-6 flex gap-2"><Activity className="text-green-600"/> Movimento</h2>
-            <div className="space-y-4">{EXERCISE_DB.map(e => { const sel = plan.movement.includes(e.id); return <div key={e.id} onClick={()=>toggleExercise(e)} className={`p-4 rounded-xl border-2 cursor-pointer flex justify-between ${sel?'border-green-500 bg-green-50':'border-gray-200'}`}><div><h3 className="font-bold text-lg">{e.name}</h3><p className="text-sm text-slate-600">{e.description}</p></div>{sel?<CheckCircle className="text-green-600"/>:<div className="w-6 h-6 border-2 rounded-full"/>}</div> })}</div>
-            <div className="fixed bottom-0 left-0 w-full bg-white p-4 border-t flex gap-4 z-50"><Button variant="secondary" className="flex-1" onClick={()=>setStep(4)}>Voltar</Button><Button variant="primary" className="flex-[2]" onClick={()=>setStep(6)}>Descanso <ChevronRight/></Button></div>
-          </div>
-        )}
-
-        {step === 6 && (
-          <div className="pt-8 pb-32 max-w-2xl mx-auto px-4">
-            <h2 className="text-2xl font-bold text-slate-800 mb-6 flex gap-2"><Moon className="text-indigo-600"/> Descanso</h2>
-            <div className="space-y-4">{REST_DB.map(r => { const sel = plan.rest.includes(r.id); return <div key={r.id} onClick={()=>toggleRest(r.id)} className={`p-4 rounded-xl border-2 cursor-pointer flex justify-between ${sel?'border-indigo-500 bg-indigo-50':'border-gray-200'}`}><div><h3 className="font-bold text-lg">{r.name}</h3><p className="text-sm text-slate-600">{r.description}</p></div>{sel?<CheckCircle className="text-indigo-600"/>:<div className="w-6 h-6 border-2 rounded-full"/>}</div> })}</div>
-            <div className="fixed bottom-0 left-0 w-full bg-white p-4 border-t flex gap-4 z-50"><Button variant="secondary" className="flex-1" onClick={()=>setStep(5)}>Voltar</Button><Button variant="primary" className="flex-[2]" onClick={()=>setStep(8)}>Resumo <ChevronRight/></Button></div>
-          </div>
-        )}
-
-        {step === 8 && (
-          <div className="pt-8 pb-40 max-w-3xl mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-6">Resumo do Plano</h2>
-            <Card className="mb-6"><h3 className="font-bold text-xl mb-4 flex gap-2"><Utensils className="text-blue-600"/> Alimentação</h3><div className="space-y-2 text-sm">{plan.food.map((i,x)=>{const f=FOOD_DB.find(y=>y.id===i.foodId);return f?<div key={x} className="flex justify-between border-b py-1"><span>{f.name} ({i.portions}x)</span><span className="font-bold">{f.protein*i.portions}g</span></div>:null})}</div><div className="mt-4 flex justify-between font-bold text-lg"><span>Total</span><span className={proteinGap>0?'text-orange-600':'text-green-600'}>{Math.round(totalProteinSelected)}g / {result?.proteinDaily}g</span></div></Card>
-            <Card className="mb-6"><h3 className="font-bold text-xl mb-4 flex gap-2"><Activity className="text-green-600"/> Movimento</h3><ul className="list-disc ml-5">{plan.movement.map(id=>{const e=EXERCISE_DB.find(x=>x.id===id);return e?<li key={id}>{e.name}</li>:null})}</ul></Card>
-            <Card className="mb-6"><h3 className="font-bold text-xl mb-4 flex gap-2"><Moon className="text-indigo-600"/> Descanso</h3><ul className="list-disc ml-5">{plan.rest.map(id=>{const r=REST_DB.find(x=>x.id===id);return r?<li key={id}>{r.name}</li>:null})}</ul></Card>
-            <div className="space-y-3 pb-8"><Button onClick={handleDownloadPDF} loading={isGenerating} icon={Download} className="w-full">Baixar PDF</Button><div className="flex gap-3"><Button onClick={resetApp} variant="outline" className="flex-1" icon={RefreshCw}>Novo</Button><Button onClick={handleSharePDF} loading={isGenerating} variant="outline" className="flex-1" icon={Share2}>Compartilhar</Button></div></div>
-          </div>
-        )}
       </div>
     </div>
-  );
-}
+
+    <!-- Seu bundle JS (caso Vite ou Webpack) -->
+    <script type="module" src="/src/main.tsx"></script>
+
+  </body>
+</html>
