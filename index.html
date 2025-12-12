@@ -406,7 +406,7 @@ export default function App() {
     
     // Configurações: scale 2 para qualidade, margem pequena para aproveitar folha
     const opt = {
-      margin: 5,
+      margin: 0,
       filename: `Plano_Schola_${input.name.replace(/\s+/g, '_')}.pdf`,
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { scale: 2, useCORS: true, scrollX: 0, scrollY: 0 },
@@ -487,11 +487,22 @@ export default function App() {
   return (
     <div className="font-sans text-slate-900 bg-slate-50 min-h-screen relative overflow-x-hidden">
       
-      {/* TEMPLATE DE IMPRESSÃO (CORRIGIDO: Estrutura HTML visível, fundo branco, posição absoluta) */}
-      <div className="absolute top-0 left-[-5000px]">
+      {/* TEMPLATE DE IMPRESSÃO (CORRIGIDO: Estrutura HTML visível, fundo branco, posição absoluta FIXADA) */}
+      <div 
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          zIndex: -50,
+          width: '100%',
+          height: 0,
+          overflow: 'hidden'
+        }}
+      >
         <div 
           ref={pdfRef}
-          className="w-[750px] min-h-[1000px] bg-white text-slate-900 p-8 border border-gray-200"
+          className="bg-white text-slate-900 p-8 border border-gray-200"
+          style={{ width: '790px', minHeight: '1120px' }} // 790px é largura A4 segura
         >
            {/* HEADER COMPACTO */}
            <div className="flex items-center justify-between border-b-2 border-slate-800 pb-3 mb-4">
