@@ -18,8 +18,7 @@ import {
   RefreshCw,
   Download,
   Calendar,
-  User,
-  Target
+  User
 } from 'lucide-react';
 
 /**
@@ -28,31 +27,26 @@ import {
  * ==========================================
  */
 const FOOD_DB = [
-  // A) PROTEÍNAS ANIMAIS - Bovinos
+  // A) PROTEÍNAS ANIMAIS
   { id: 'b1', name: "Carne bovina cozida", portion: "100 g", protein: 26, category: 'carnes' },
   { id: 'b2', name: "Carne bovina grelhada", portion: "100 g", protein: 28, category: 'carnes' },
   { id: 'b3', name: "Carne bovina assada", portion: "100 g", protein: 28, category: 'carnes' },
   { id: 'b4', name: "Carne moída refogada", portion: "100 g", protein: 25, category: 'carnes' },
-  // Suínos
   { id: 's1', name: "Lombo suíno assado", portion: "100 g", protein: 27, category: 'carnes' },
   { id: 's2', name: "Pernil cozido", portion: "100 g", protein: 25, category: 'carnes' },
   { id: 's3', name: "Costelinha suína assada", portion: "100 g", protein: 24, category: 'carnes' },
   { id: 's4', name: "Carne suína desfiada", portion: "100 g", protein: 25, category: 'carnes' },
-  // Aves
   { id: 'a1', name: "Peito de frango cozido", portion: "100 g", protein: 31, category: 'aves' },
   { id: 'a2', name: "Peito de frango grelhado", portion: "100 g", protein: 32, category: 'aves' },
   { id: 'a3', name: "Peito de frango assado", portion: "100 g", protein: 31, category: 'aves' },
   { id: 'a4', name: "Frango desfiado", portion: "100 g", protein: 30, category: 'aves' },
   { id: 'a5', name: "Peito de peru cozido", portion: "100 g", protein: 29, category: 'aves' },
   { id: 'a6', name: "Pato assado", portion: "100 g", protein: 19, category: 'aves' },
-  // Ovos
   { id: 'o1', name: "Ovo cozido", portion: "1 unidade", protein: 6, category: 'ovos' },
   { id: 'o2', name: "Ovo frito", portion: "1 unidade", protein: 6, category: 'ovos' },
   { id: 'o3', name: "Ovos mexidos", portion: "2 unidades", protein: 12, category: 'ovos' },
-  // Caprinos/Ovinos
   { id: 'c1', name: "Carneiro cozido", portion: "100 g", protein: 25, category: 'carnes' },
   { id: 'c2', name: "Carneiro assado", portion: "100 g", protein: 26, category: 'carnes' },
-  // Peixes e Frutos do Mar
   { id: 'p1', name: "Tilápia assada", portion: "100 g", protein: 26, category: 'peixes' },
   { id: 'p2', name: "Tilápia cozida", portion: "100 g", protein: 24, category: 'peixes' },
   { id: 'p3', name: "Salmão grelhado", portion: "100 g", protein: 24, category: 'peixes' },
@@ -60,8 +54,7 @@ const FOOD_DB = [
   { id: 'p5', name: "Sardinha em lata (óleo)", portion: "1 lata", protein: 18, category: 'peixes' },
   { id: 'p6', name: "Atum em lata", portion: "1 lata (170g)", protein: 30, category: 'peixes' },
   { id: 'p7', name: "Camarão salteado", portion: "100 g", protein: 24, category: 'peixes' },
-
-  // B) PROTEÍNAS VEGETAIS - Leguminosas
+  // B) PROTEÍNAS VEGETAIS
   { id: 'v1', name: "Feijão carioca cozido", portion: "1 concha", protein: 8, category: 'vegetais' },
   { id: 'v2', name: "Feijão preto cozido", portion: "1 concha", protein: 9, category: 'vegetais' },
   { id: 'v3', name: "Lentilha cozida", portion: "1 concha", protein: 9, category: 'vegetais' },
@@ -69,18 +62,15 @@ const FOOD_DB = [
   { id: 'v5', name: "Grão-de-bico cozido", portion: "100 g", protein: 9, category: 'vegetais' },
   { id: 'v6', name: "Soja cozida", portion: "100 g", protein: 16, category: 'vegetais' },
   { id: 'v7', name: "Edamame", portion: "100 g", protein: 11, category: 'vegetais' },
-  // PANCs e Vegetais Proteicos
   { id: 'v8', name: "Ora-pro-nóbis cozida", portion: "100 g", protein: 3, category: 'vegetais' },
   { id: 'v9', name: "Taioba refogada", portion: "100 g", protein: 3, category: 'vegetais' },
   { id: 'v10', name: "Quinoa cozida", portion: "100 g", protein: 4, category: 'vegetais' },
   { id: 'v11', name: "Milho verde", portion: "100 g", protein: 3, category: 'vegetais' },
-  // Oleaginosas
   { id: 'n1', name: "Amendoim torrado", portion: "30 g (punhado)", protein: 7, category: 'snack' },
   { id: 'n2', name: "Castanha de caju", portion: "30 g", protein: 5, category: 'snack' },
   { id: 'n3', name: "Castanha do Pará", portion: "30 g", protein: 4, category: 'snack' },
   { id: 'n4', name: "Amêndoas", portion: "30 g", protein: 6, category: 'snack' },
   { id: 'n5', name: "Semente de abóbora", portion: "30 g", protein: 7, category: 'snack' },
-
   // C) SUPLEMENTOS
   { id: 'sup1', name: "Whey Protein", portion: "1 scoop (30g)", protein: 24, category: 'suplementos' },
   { id: 'sup2', name: "Caseína", portion: "1 scoop (30g)", protein: 24, category: 'suplementos' },
@@ -95,46 +85,11 @@ const FOOD_DB = [
  * ==========================================
  */
 const EXERCISE_DB = [
-  {
-    id: "remo_maquina",
-    name: "Remo — aparelho completo (ergômetro)",
-    description: "Trabalho completo de força e cardio.",
-    default_duration: "15 min",
-    intensity: "high", 
-    tags: ["intenso", "cardio", "força"]
-  },
-  {
-    id: "flexoes_parede",
-    name: "Flexões em pé na parede",
-    description: "Fortalecimento peitoral seguro.",
-    default_duration: "3 séries de 10 reps",
-    intensity: "light",
-    tags: ["força", "iniciante"]
-  },
-  {
-    id: "agachamento_cadeira",
-    name: "Agachamento com Cadeira",
-    description: "Sentar e levantar da cadeira.",
-    default_duration: "3 séries de 10 reps",
-    intensity: "moderate",
-    tags: ["força", "pernas"]
-  },
-  {
-    id: "caminhada",
-    name: "Caminhada ao Ar Livre",
-    description: "Manutenção cardiovascular.",
-    default_duration: "30 min",
-    intensity: "moderate",
-    tags: ["cardio"]
-  },
-  {
-    id: "musculacao_livre",
-    name: "Musculação (Pesos Livres)",
-    description: "Treino resistido tradicional.",
-    default_duration: "45 min",
-    intensity: "high",
-    tags: ["força", "intenso"]
-  }
+  { id: "remo_maquina", name: "Remo — aparelho completo", description: "Trabalho completo de força e cardio.", default_duration: "15 min", intensity: "high", tags: ["intenso", "cardio", "força"] },
+  { id: "flexoes_parede", name: "Flexões em pé na parede", description: "Fortalecimento peitoral seguro.", default_duration: "3 séries de 10 reps", intensity: "light", tags: ["força", "iniciante"] },
+  { id: "agachamento_cadeira", name: "Agachamento com Cadeira", description: "Sentar e levantar da cadeira.", default_duration: "3 séries de 10 reps", intensity: "moderate", tags: ["força", "pernas"] },
+  { id: "caminhada", name: "Caminhada ao Ar Livre", description: "Manutenção cardiovascular.", default_duration: "30 min", intensity: "moderate", tags: ["cardio"] },
+  { id: "musculacao_livre", name: "Musculação (Pesos Livres)", description: "Treino resistido tradicional.", default_duration: "45 min", intensity: "high", tags: ["força", "intenso"] }
 ];
 
 /**
@@ -143,117 +98,34 @@ const EXERCISE_DB = [
  * ==========================================
  */
 const REST_DB = [
-  {
-    id: "sono_8h",
-    name: "Sono 7–8 horas",
-    description: "Fundamental para síntese muscular.",
-    type: "biologico"
-  },
-  {
-    id: "higiene_sono",
-    name: "Higiene do Sono",
-    description: "Evitar telas 1h antes de deitar.",
-    type: "habito"
-  },
-  {
-    id: "respiracao_444",
-    name: "Respiração 4-4-4",
-    description: "Técnica de relaxamento para dormir.",
-    type: "relaxamento"
-  },
-  {
-    id: "sesta",
-    name: "Sesta Reparadora",
-    description: "20-30 min após almoço.",
-    type: "biologico"
-  },
-  {
-    id: "caca_palavras",
-    name: "Caça Palavras (Passatempo Inteligente)",
-    description: "Estimulação cognitiva ativa.",
-    type: "cognitivo"
-  },
-  {
-    id: "bingo_interativo",
-    name: "Bingo Interativo (Passatempo Inteligente)",
-    description: "Socialização e atenção.",
-    type: "cognitivo"
-  },
-  {
-    id: "domino_inteligente",
-    name: "Dominó Inteligente (Passatempo Inteligente)",
-    description: "Estratégia e memória.",
-    type: "cognitivo"
-  }
+  { id: "sono_8h", name: "Sono 7–8 horas", description: "Fundamental para síntese muscular.", type: "biologico" },
+  { id: "higiene_sono", name: "Higiene do Sono", description: "Evitar telas 1h antes de deitar.", type: "habito" },
+  { id: "respiracao_444", name: "Respiração 4-4-4", description: "Técnica de relaxamento para dormir.", type: "relaxamento" },
+  { id: "sesta", name: "Sesta Reparadora", description: "20-30 min após almoço.", type: "biologico" },
+  { id: "caca_palavras", name: "Caça Palavras (Passatempo Inteligente)", description: "Estimulação cognitiva ativa.", type: "cognitivo" },
+  { id: "bingo_interativo", name: "Bingo Interativo (Passatempo Inteligente)", description: "Socialização e atenção.", type: "cognitivo" },
+  { id: "domino_inteligente", name: "Dominó Inteligente (Passatempo Inteligente)", description: "Estratégia e memória.", type: "cognitivo" }
 ];
 
-/**
- * ==========================================
- * LÓGICA DE NEGÓCIO
- * ==========================================
- */
-export interface CalcInput {
-  name: string;
-  weightKg: number;
-  heightCm: number;
-  age: number;
-  sex: 'M' | 'F' | 'O';
-  objective: 'prevent' | 'moderate' | 'aggressive';
-  activityLevel: 'sedentary' | 'light' | 'moderate' | 'intense';
-  mealsPerDay: number;
-  medicalFlags: string[];
-}
-
-export interface CalcOutput {
-  weightUsed: number;
-  factor: number;
-  proteinDaily: number;
-  proteinPerMeal: number;
-  warnings: string[];
-}
-
-interface PlanItemFood {
-  foodId: string;
-  portions: number;
-  meal: 'cafe' | 'almoco' | 'jantar' | 'snack';
-}
-
-interface PlanState {
-  food: PlanItemFood[];
-  movement: string[];
-  rest: string[];
-  extraFactorConfirmed: boolean;
-}
+// LÓGICA DE NEGÓCIO E TIPOS
+export interface CalcInput { name: string; weightKg: number; heightCm: number; age: number; sex: 'M' | 'F' | 'O'; objective: 'prevent' | 'moderate' | 'aggressive'; activityLevel: 'sedentary' | 'light' | 'moderate' | 'intense'; mealsPerDay: number; medicalFlags: string[]; }
+export interface CalcOutput { weightUsed: number; factor: number; proteinDaily: number; proteinPerMeal: number; warnings: string[]; }
+interface PlanItemFood { foodId: string; portions: number; meal: 'cafe' | 'almoco' | 'jantar' | 'snack'; }
+interface PlanState { food: PlanItemFood[]; movement: string[]; rest: string[]; extraFactorConfirmed: boolean; }
 
 const calculateNeeds = (input: CalcInput, extraFactorConfirmed: boolean): CalcOutput | null => {
   if (input.medicalFlags.includes('renal_insufficiency')) return null;
-
   let factor = 1.4;
   if (input.objective === 'moderate') factor = 1.6;
   if (input.objective === 'aggressive') factor = 1.8;
-
-  if (input.activityLevel === 'intense' || extraFactorConfirmed) {
-    factor += 0.1;
-  }
+  if (input.activityLevel === 'intense' || extraFactorConfirmed) factor += 0.1;
   if (factor > 2.5) factor = 2.5;
-
   const proteinDaily = Math.round(input.weightKg * factor);
   const proteinPerMeal = Math.round((proteinDaily / input.mealsPerDay) * 10) / 10;
-
-  return {
-    weightUsed: input.weightKg,
-    factor: Math.round(factor * 100) / 100,
-    proteinDaily,
-    proteinPerMeal,
-    warnings: []
-  };
+  return { weightUsed: input.weightKg, factor: Math.round(factor * 100) / 100, proteinDaily, proteinPerMeal, warnings: [] };
 };
 
-/**
- * ==========================================
- * COMPONENTES DE UI
- * ==========================================
- */
+// COMPONENTES UI
 const Button = ({ onClick, children, variant = 'primary', className = '', icon: Icon, disabled = false, loading = false }: any) => {
   const baseStyle = "flex items-center justify-center gap-2 font-bold text-lg rounded-xl transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed";
   const variants = {
@@ -261,62 +133,18 @@ const Button = ({ onClick, children, variant = 'primary', className = '', icon: 
     secondary: "bg-gray-200 text-gray-800 hover:bg-gray-300 py-3 px-6",
     outline: "border-2 border-slate-700 text-slate-700 hover:bg-slate-50 py-2 px-4",
   };
-
-  return (
-    <button onClick={onClick} disabled={disabled || loading} className={`${baseStyle} ${variants[variant as keyof typeof variants]} ${className}`}>
-      {loading ? <RefreshCw className="animate-spin" size={20} /> : <>{Icon && <Icon size={20} />}{children}</>}
-    </button>
-  );
+  return <button onClick={onClick} disabled={disabled || loading} className={`${baseStyle} ${variants[variant as keyof typeof variants]} ${className}`}>{loading ? <RefreshCw className="animate-spin" size={20} /> : <>{Icon && <Icon size={20} />}{children}</>}</button>;
 };
 
-const Card = ({ children, className = '' }: any) => (
-  <div className={`bg-white p-5 rounded-2xl shadow-sm border border-gray-200 ${className}`}>
-    {children}
-  </div>
-);
-
+const Card = ({ children, className = '' }: any) => <div className={`bg-white p-5 rounded-2xl shadow-sm border border-gray-200 ${className}`}>{children}</div>;
 const InputField = ({ label, type = "text", value, onChange, placeholder, suffix }: any) => (
-  <div className="mb-4">
-    <label className="block text-gray-700 font-bold mb-1 text-lg">{label}</label>
-    <div className="relative">
-      <input 
-        type={type} 
-        value={value} 
-        onChange={onChange}
-        placeholder={placeholder}
-        className="w-full bg-gray-50 border-2 border-gray-200 rounded-xl p-3 text-xl font-medium focus:border-slate-800 focus:outline-none transition-colors"
-      />
-      {suffix && <span className="absolute right-4 top-4 text-gray-400 font-bold">{suffix}</span>}
-    </div>
-  </div>
+  <div className="mb-4"><label className="block text-gray-700 font-bold mb-1 text-lg">{label}</label><div className="relative"><input type={type} value={value} onChange={onChange} placeholder={placeholder} className="w-full bg-gray-50 border-2 border-gray-200 rounded-xl p-3 text-xl font-medium focus:border-slate-800 focus:outline-none transition-colors" />{suffix && <span className="absolute right-4 top-4 text-gray-400 font-bold">{suffix}</span>}</div></div>
 );
 
-/**
- * ==========================================
- * APP PRINCIPAL
- * ==========================================
- */
 export default function App() {
   const [step, setStep] = useState(1);
-  const [input, setInput] = useState<CalcInput>({
-    name: '',
-    weightKg: 0,
-    heightCm: 0,
-    age: 0,
-    sex: 'F',
-    objective: 'prevent',
-    activityLevel: 'light',
-    mealsPerDay: 3,
-    medicalFlags: []
-  });
-
-  const [plan, setPlan] = useState<PlanState>({
-    food: [],
-    movement: [],
-    rest: [],
-    extraFactorConfirmed: false
-  });
-
+  const [input, setInput] = useState<CalcInput>({ name: '', weightKg: 0, heightCm: 0, age: 0, sex: 'F', objective: 'prevent', activityLevel: 'light', mealsPerDay: 3, medicalFlags: [] });
+  const [plan, setPlan] = useState<PlanState>({ food: [], movement: [], rest: [], extraFactorConfirmed: false });
   const [isGenerating, setIsGenerating] = useState(false);
   const pdfRef = useRef<HTMLDivElement>(null);
 
@@ -329,91 +157,49 @@ export default function App() {
   }, []);
 
   const result = useMemo(() => calculateNeeds(input, plan.extraFactorConfirmed), [input, plan.extraFactorConfirmed]);
-
-  const totalProteinSelected = useMemo(() => {
-    return plan.food.reduce((acc, item) => {
-      const food = FOOD_DB.find(f => f.id === item.foodId);
-      return acc + (food ? food.protein * item.portions : 0);
-    }, 0);
-  }, [plan.food]);
-
+  const totalProteinSelected = useMemo(() => plan.food.reduce((acc, item) => acc + (FOOD_DB.find(f => f.id === item.foodId)?.protein || 0) * item.portions, 0), [plan.food]);
   const proteinGap = result ? result.proteinDaily - totalProteinSelected : 0;
 
-  const handleInputChange = (field: keyof CalcInput, value: any) => {
-    setInput(prev => ({ ...prev, [field]: value }));
-  };
-
-  const toggleMedicalFlag = (flag: string) => {
-    setInput(prev => {
-      const exists = prev.medicalFlags.includes(flag);
-      return { ...prev, medicalFlags: exists ? prev.medicalFlags.filter(f => f !== flag) : [...prev.medicalFlags, flag] };
-    });
-  };
-
-  const checkRenalBlock = () => {
-    if (input.medicalFlags.includes('renal_insufficiency')) {
-      setStep(99); 
-    } else {
-      setStep(3);
-    }
-  };
-
+  const handleInputChange = (field: keyof CalcInput, value: any) => setInput(prev => ({ ...prev, [field]: value }));
+  const toggleMedicalFlag = (flag: string) => setInput(prev => ({ ...prev, medicalFlags: prev.medicalFlags.includes(flag) ? prev.medicalFlags.filter(f => f !== flag) : [...prev.medicalFlags, flag] }));
+  const checkRenalBlock = () => { if (input.medicalFlags.includes('renal_insufficiency')) setStep(99); else setStep(3); };
+  
   const updateFood = (foodId: string, meal: PlanItemFood['meal'], delta: number) => {
     setPlan(prev => {
       const existing = prev.food.find(i => i.foodId === foodId && i.meal === meal);
       if (existing) {
         const newPortions = existing.portions + delta;
-        if (newPortions <= 0) return { ...prev, food: prev.food.filter(i => !(i.foodId === foodId && i.meal === meal)) };
-        return { ...prev, food: prev.food.map(i => i.foodId === foodId && i.meal === meal ? { ...i, portions: newPortions } : i) };
+        return newPortions <= 0 ? { ...prev, food: prev.food.filter(i => !(i.foodId === foodId && i.meal === meal)) } : { ...prev, food: prev.food.map(i => i.foodId === foodId && i.meal === meal ? { ...i, portions: newPortions } : i) };
       }
-      if (delta > 0) return { ...prev, food: [...prev.food, { foodId, meal, portions: 1 }] };
-      return prev;
+      return delta > 0 ? { ...prev, food: [...prev.food, { foodId, meal, portions: 1 }] } : prev;
     });
   };
 
   const toggleExercise = (ex: typeof EXERCISE_DB[0]) => {
     const isSelected = plan.movement.includes(ex.id);
     if (!isSelected && ex.intensity === 'high' && !plan.extraFactorConfirmed && input.activityLevel !== 'intense') {
-      const confirm = window.confirm("Exercício intenso selecionado. Aumentar proteína (+0.1 g/kg)?");
-      if (confirm) {
+      if (window.confirm("Exercício intenso selecionado. Aumentar proteína (+0.1 g/kg)?")) {
         setPlan(prev => ({ ...prev, movement: [...prev.movement, ex.id], extraFactorConfirmed: true }));
         return;
       }
     }
-    setPlan(prev => ({
-      ...prev,
-      movement: isSelected ? prev.movement.filter(i => i !== ex.id) : [...prev.movement, ex.id]
-    }));
+    setPlan(prev => ({ ...prev, movement: isSelected ? prev.movement.filter(i => i !== ex.id) : [...prev.movement, ex.id] }));
   };
 
-  const toggleRest = (id: string) => {
-    setPlan(prev => ({
-      ...prev,
-      rest: prev.rest.includes(id) ? prev.rest.filter(i => i !== id) : [...prev.rest, id]
-    }));
-  };
+  const toggleRest = (id: string) => setPlan(prev => ({ ...prev, rest: prev.rest.includes(id) ? prev.rest.filter(i => i !== id) : [...prev.rest, id] }));
+  const resetApp = () => { setStep(1); setPlan({ food: [], movement: [], rest: [], extraFactorConfirmed: false }); };
 
-  const resetApp = () => {
-    setStep(1);
-    setPlan({ food: [], movement: [], rest: [], extraFactorConfirmed: false });
-  };
-
-  // --- PDF LOGIC ---
   const generatePDFBlob = async () => {
     // @ts-ignore
     if (typeof window.html2pdf === 'undefined' || !pdfRef.current) return null;
     const element = pdfRef.current;
-    
-    // Configurações: scale 2 para qualidade, margem pequena para aproveitar folha
     const opt = {
       margin: 0,
-      filename: `Plano_Schola_${input.name.replace(/\s+/g, '_')}.pdf`,
+      filename: `Plano_Schola_${input.name}.pdf`,
       image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true, scrollX: 0, scrollY: 0 },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+      html2canvas: { scale: 2, useCORS: true, scrollY: 0, scrollX: 0 },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
-
     // @ts-ignore
     return await window.html2pdf().set(opt).from(element).output('blob');
   };
@@ -423,20 +209,16 @@ export default function App() {
     setTimeout(async () => {
       try {
         const blob = await generatePDFBlob();
-        if (!blob) throw new Error("Falha ao gerar blob");
-        
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `Plano_Schola_${input.name.replace(/\s+/g, '_')}.pdf`;
-        link.click();
-        URL.revokeObjectURL(url);
-      } catch (e) {
-        console.error(e);
-        alert("Erro ao gerar PDF.");
-      }
+        if (blob) {
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `Plano_${input.name}.pdf`;
+          link.click();
+        }
+      } catch (e) { alert("Erro ao gerar PDF."); }
       setIsGenerating(false);
-    }, 100);
+    }, 500);
   };
 
   const handleSharePDF = async () => {
@@ -444,398 +226,241 @@ export default function App() {
     setTimeout(async () => {
       try {
         const blob = await generatePDFBlob();
-        if (!blob) throw new Error("Falha ao gerar blob");
-
-        const file = new File([blob], `Plano_Schola_${input.name.replace(/\s+/g, '_')}.pdf`, { type: 'application/pdf' });
-        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-          await navigator.share({
-            files: [file],
-            title: 'Meu Plano Schola da Mente',
-            text: `Olá! Aqui está o plano de prevenção da sarcopenia de ${input.name}.`
-          });
-        } else {
-          alert("Compartilhamento direto não suportado. Baixando arquivo...");
-          const url = URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = url;
-          link.download = `Plano_Schola_${input.name.replace(/\s+/g, '_')}.pdf`;
-          link.click();
-          URL.revokeObjectURL(url);
-        }
-      } catch (e) {
-        console.error(e);
-        alert("Erro ao compartilhar. Tente baixar o PDF.");
-      }
+        if (blob && navigator.share) {
+          const file = new File([blob], `Plano.pdf`, { type: 'application/pdf' });
+          await navigator.share({ files: [file], title: 'Meu Plano Schola' });
+        } else { handleDownloadPDF(); }
+      } catch (e) { handleDownloadPDF(); }
       setIsGenerating(false);
-    }, 100);
+    }, 500);
   };
-
-  const Header = () => (
-    <header className="fixed top-0 left-0 w-full bg-slate-900 text-white py-4 z-50 shadow-md">
-      <div className="max-w-3xl mx-auto px-4 flex items-center gap-3">
-        <Brain className="text-blue-300" size={28} />
-        <div>
-          <h1 className="font-bold text-lg leading-tight">Schola da Mente</h1>
-          <p className="text-xs text-blue-200 uppercase tracking-wider">Conectando a Mente com a Vida</p>
-        </div>
-      </div>
-    </header>
-  );
 
   useEffect(() => window.scrollTo(0,0), [step]);
 
   return (
     <div className="font-sans text-slate-900 bg-slate-50 min-h-screen relative overflow-x-hidden">
       
-      {/* TEMPLATE DE IMPRESSÃO (CORRIGIDO: Estrutura HTML visível, fundo branco, posição absoluta FIXADA) */}
-      <div 
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          zIndex: -50,
-          width: '100%',
-          height: 0,
-          overflow: 'hidden'
-        }}
-      >
-        <div 
-          ref={pdfRef}
-          className="bg-white text-slate-900 p-8 border border-gray-200"
-          style={{ width: '790px', minHeight: '1120px' }} // 790px é largura A4 segura
-        >
-           {/* HEADER COMPACTO */}
-           <div className="flex items-center justify-between border-b-2 border-slate-800 pb-3 mb-4">
-              <div className="flex items-center gap-3">
-                 <Brain size={40} className="text-blue-900" />
+      {/* TEMPLATE PDF - FIX: 
+        1. Position absolute (top 0, left 0)
+        2. z-index negative to hide behind App
+        3. Width 794px (A4 safe width)
+        4. Explicit white background
+        5. NO height: 0 or overflow: hidden
+      */}
+      <div className="absolute top-0 left-0 -z-50" style={{ width: '794px' }}>
+        <div ref={pdfRef} className="bg-white text-slate-900 p-8 w-full min-h-[1123px]">
+           <div className="flex justify-between border-b-2 border-slate-900 pb-4 mb-6">
+              <div className="flex gap-4 items-center">
+                 <Brain size={48} className="text-blue-900" />
                  <div>
-                    <h1 className="text-2xl font-black text-slate-900 leading-none">Schola da Mente</h1>
-                    <p className="text-slate-600 font-bold uppercase tracking-widest text-[10px] mt-0.5">Conectando a Mente com a Vida</p>
+                    <h1 className="text-3xl font-black text-slate-900">Schola da Mente</h1>
+                    <p className="text-xs font-bold uppercase tracking-widest text-slate-500">Conectando a Mente com a Vida</p>
                  </div>
               </div>
               <div className="text-right">
-                 <p className="text-[10px] uppercase font-bold text-slate-500">Objetivo</p>
+                 <p className="text-[10px] font-bold uppercase text-slate-400">Objetivo</p>
                  <p className="text-sm font-bold text-blue-900">Prevenção da Sarcopenia</p>
-                 <p className="text-[8px] font-bold text-red-600 uppercase">(Perda de Músculos)</p>
+                 <p className="text-[10px] font-bold text-red-600 uppercase">(Perda de Músculos)</p>
               </div>
            </div>
 
-           {/* CARTÃO DO USUÁRIO COMPACTO */}
-           <div className="bg-slate-50 rounded-lg p-3 border border-slate-200 mb-4 flex items-center justify-between">
+           <div className="bg-slate-50 p-6 rounded-xl border border-slate-200 mb-6 flex justify-between items-center">
               <div>
-                 <p className="text-[9px] font-bold text-slate-500 uppercase mb-0.5">Plano Para</p>
-                 <p className="text-lg font-black text-slate-900 mb-1">{input.name}</p>
-                 <div className="flex gap-2 text-[9px] font-medium text-slate-600">
-                    <span className="bg-white px-2 py-0.5 rounded border">{input.age} anos</span>
-                    <span className="bg-white px-2 py-0.5 rounded border">{input.weightKg} kg</span>
-                    <span className="bg-white px-2 py-0.5 rounded border">{new Date().toLocaleDateString('pt-BR')}</span>
+                 <p className="text-[10px] font-bold uppercase text-slate-400 mb-1">Plano Para</p>
+                 <p className="text-3xl font-black text-slate-900 mb-1">{input.name}</p>
+                 <div className="flex gap-3 text-xs font-medium text-slate-600">
+                    <span className="bg-white border px-2 py-1 rounded">{input.age} anos</span>
+                    <span className="bg-white border px-2 py-1 rounded">{input.weightKg} kg</span>
+                    <span className="bg-white border px-2 py-1 rounded">{new Date().toLocaleDateString()}</span>
                  </div>
               </div>
               <div className="text-right">
-                 <p className="text-[9px] font-bold text-slate-500 uppercase">Meta Diária</p>
-                 <p className="text-xl font-black text-slate-900">{result?.proteinDaily}g</p>
-                 <div className="text-[9px] font-bold mt-0.5">
-                    <span className={proteinGap > 0 ? "text-orange-600" : "text-green-600"}>
-                       {proteinGap > 0 ? `Falta: ${Math.round(proteinGap)}g` : "Meta Atingida!"}
-                    </span>
-                 </div>
+                 <p className="text-[10px] font-bold uppercase text-slate-400">Meta Proteica</p>
+                 <p className="text-4xl font-black text-slate-900">{result?.proteinDaily}g</p>
+                 <p className={`text-xs font-bold ${proteinGap > 0 ? 'text-orange-600' : 'text-green-600'}`}>
+                    {proteinGap > 0 ? `Falta: ${Math.round(proteinGap)}g` : "Meta Atingida!"}
+                 </p>
               </div>
            </div>
 
-           {/* 1. ALIMENTAÇÃO - TABELA ULTRA COMPACTA */}
-           <div className="mb-4">
-              <h3 className="bg-blue-900 text-white px-2 py-1 rounded-t-lg font-bold text-xs flex items-center gap-1">
-                 <Utensils size={12}/> 1. Plano Alimentar
-              </h3>
+           <div className="mb-6">
+              <h3 className="bg-blue-900 text-white px-4 py-2 rounded-t-lg font-bold flex gap-2 items-center text-sm"><Utensils size={16}/> 1. Alimentação</h3>
               <div className="border border-slate-200 rounded-b-lg">
-                 <table className="w-full text-[9px]">
-                    <thead className="bg-slate-100 text-slate-600 border-b border-slate-200">
-                       <tr>
-                          <th className="p-1 text-left w-16">Refeição</th>
-                          <th className="p-1 text-left">Alimento</th>
-                          <th className="p-1 text-right w-12">Qtd.</th>
-                          <th className="p-1 text-right w-12">Prot.</th>
-                       </tr>
+                 <table className="w-full text-xs">
+                    <thead className="bg-slate-100 text-slate-600 border-b">
+                       <tr><th className="p-2 text-left">Refeição</th><th className="p-2 text-left">Item</th><th className="p-2 text-right">Qtd.</th><th className="p-2 text-right">Prot.</th></tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
-                       {plan.food.map((item, i) => {
-                          const f = FOOD_DB.find(x => x.id === item.foodId);
-                          if(!f) return null;
-                          return (
-                             <tr key={i}>
-                                <td className="p-1 font-bold text-slate-500 capitalize">{item.meal}</td>
-                                <td className="p-1 font-bold text-slate-900">{f.name}</td>
-                                <td className="p-1 text-right text-slate-600">{item.portions}x</td>
-                                <td className="p-1 text-right font-black text-slate-900">{f.protein * item.portions}g</td>
+                       {plan.food.map((i, idx) => {
+                          const f = FOOD_DB.find(x => x.id === i.foodId);
+                          return f ? (
+                             <tr key={idx}>
+                                <td className="p-2 font-bold text-slate-500 capitalize">{i.meal}</td>
+                                <td className="p-2 font-bold text-slate-900">{f.name}</td>
+                                <td className="p-2 text-right">{i.portions}x</td>
+                                <td className="p-2 text-right font-bold text-slate-900">{f.protein * i.portions}g</td>
                              </tr>
-                          )
+                          ) : null
                        })}
-                       <tr className="bg-slate-50 font-bold">
-                          <td colSpan={3} className="p-1 text-right text-slate-500 uppercase text-[8px]">Total Planejado</td>
-                          <td className="p-1 text-right text-xs text-blue-900">{Math.round(totalProteinSelected)}g</td>
-                       </tr>
+                       <tr className="bg-slate-50 font-bold"><td colSpan={3} className="p-2 text-right text-slate-500">TOTAL PLANEJADO</td><td className="p-2 text-right text-blue-900 text-sm">{Math.round(totalProteinSelected)}g</td></tr>
                     </tbody>
                  </table>
               </div>
            </div>
 
-           {/* 2 & 3. MOVIMENTO E DESCANSO - GRID COMPACTO */}
-           <div className="grid grid-cols-2 gap-4 mb-4">
+           <div className="grid grid-cols-2 gap-6 mb-6">
               <div>
-                 <h3 className="bg-green-700 text-white px-2 py-1 rounded-t-lg font-bold text-xs flex items-center gap-1">
-                    <Activity size={12}/> 2. Movimento
-                 </h3>
-                 <div className="border border-slate-200 rounded-b-lg p-2 bg-white h-full min-h-[80px]">
-                    <ul className="space-y-1 text-[9px]">
+                 <h3 className="bg-green-700 text-white px-4 py-2 rounded-t-lg font-bold flex gap-2 items-center text-sm"><Activity size={16}/> 2. Movimento</h3>
+                 <div className="border border-slate-200 rounded-b-lg p-3 bg-white min-h-[100px]">
+                    <ul className="space-y-2 text-xs">
                        {plan.movement.length === 0 && <li className="text-slate-400 italic">Nada selecionado.</li>}
                        {plan.movement.map(id => {
                           const ex = EXERCISE_DB.find(e => e.id === id);
-                          return ex ? (
-                             <li key={id} className="flex gap-1 items-start">
-                                <CheckCircle size={10} className="text-green-600 mt-0.5 shrink-0"/>
-                                <span className="font-bold text-slate-900 leading-tight">{ex.name}</span>
-                             </li>
-                          ) : null
+                          return ex ? <li key={id} className="flex gap-2 items-start"><CheckCircle size={12} className="text-green-600 mt-0.5 shrink-0"/><span className="font-bold">{ex.name}</span></li> : null
                        })}
                     </ul>
                  </div>
               </div>
-
               <div>
-                 <h3 className="bg-indigo-700 text-white px-2 py-1 rounded-t-lg font-bold text-xs flex items-center gap-1">
-                    <Moon size={12}/> 3. Descanso
-                 </h3>
-                 <div className="border border-slate-200 rounded-b-lg p-2 bg-white h-full min-h-[80px]">
-                    <ul className="space-y-1 text-[9px]">
+                 <h3 className="bg-indigo-700 text-white px-4 py-2 rounded-t-lg font-bold flex gap-2 items-center text-sm"><Moon size={16}/> 3. Descanso</h3>
+                 <div className="border border-slate-200 rounded-b-lg p-3 bg-white min-h-[100px]">
+                    <ul className="space-y-2 text-xs">
                        {plan.rest.length === 0 && <li className="text-slate-400 italic">Nada selecionado.</li>}
                        {plan.rest.map(id => {
                           const r = REST_DB.find(e => e.id === id);
-                          return r ? (
-                             <li key={id} className="flex gap-1 items-start">
-                                <CheckCircle size={10} className="text-indigo-600 mt-0.5 shrink-0"/>
-                                <span className="font-bold text-slate-900 leading-tight">{r.name}</span>
-                             </li>
-                          ) : null
+                          return r ? <li key={id} className="flex gap-2 items-start"><CheckCircle size={12} className="text-indigo-600 mt-0.5 shrink-0"/><span className="font-bold">{r.name}</span></li> : null
                        })}
                     </ul>
                  </div>
               </div>
            </div>
 
-           {/* FOOTER */}
-           <div className="mt-auto border-t border-slate-200 pt-2">
-              <div className="bg-yellow-50 p-2 rounded border border-yellow-200 flex gap-2 text-[8px] text-yellow-900 text-justify items-start">
-                 <AlertTriangle className="text-yellow-600 shrink-0 mt-0.5" size={12} />
-                 <p className="leading-tight"><strong>Aviso Importante:</strong> Este documento é gerado automaticamente pelo aplicativo Schola da Mente como referência educacional. Não substitui consulta médica.</p>
+           <div className="mt-auto border-t border-slate-200 pt-4">
+              <div className="bg-yellow-50 p-3 rounded-lg border border-yellow-200 text-[10px] text-yellow-900 flex gap-2 items-start text-justify">
+                 <AlertTriangle size={16} className="text-yellow-600 shrink-0 mt-0.5" />
+                 <p><strong>Aviso Importante:</strong> Este documento é uma referência educacional gerada automaticamente. Não substitui consulta médica. Consulte um profissional antes de iniciar mudanças na dieta ou exercícios.</p>
               </div>
-              <div className="text-center mt-2 text-slate-400 text-[8px] font-bold uppercase tracking-widest">
-                 Schola da Mente © {new Date().getFullYear()}
-              </div>
+              <p className="text-center text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-4">Schola da Mente © {new Date().getFullYear()}</p>
            </div>
         </div>
       </div>
 
-      {/* CONTAINER DO APP PRINCIPAL */}
+      {/* APP PRINCIPAL (Cobre o template) */}
       <div className="relative z-10 bg-slate-50 min-h-screen">
-        {step !== 99 && <Header />}
+        {step !== 99 && (
+          <header className="sticky top-0 left-0 w-full bg-slate-900 text-white py-4 z-50 shadow-md">
+            <div className="max-w-3xl mx-auto px-4 flex items-center gap-3">
+              <Brain className="text-blue-300" size={28} />
+              <div><h1 className="font-bold text-lg leading-tight">Schola da Mente</h1><p className="text-xs text-blue-200 uppercase tracking-wider">Conectando a Mente com a Vida</p></div>
+            </div>
+          </header>
+        )}
 
-        {/* STEP 1 */}
+        {/* STEP 1: ONBOARDING */}
         {step === 1 && (
-          <div className="pt-24 pb-20 max-w-2xl mx-auto px-4">
+          <div className="pt-8 pb-20 max-w-2xl mx-auto px-4">
             <div className="bg-blue-100 p-6 rounded-2xl mb-8 border border-blue-200">
-              <h2 className="text-xl font-bold text-blue-900 mb-2">Prevenção da Sarcopenia (PERDA DE MÚSCULOS)</h2>
-              <p className="text-blue-800 text-lg">Manter sua força, autonomia e longevidade exige cuidar de Alimentação, Movimento e Descanso.</p>
+              <h2 className="text-xl font-bold text-blue-900 mb-2">Prevenção da Sarcopenia</h2>
+              <p className="text-blue-800 text-lg">Manter sua força e longevidade exige cuidar de Alimentação, Movimento e Descanso.</p>
             </div>
             <Card>
-              <InputField label="Qual seu nome?" value={input.name} onChange={(e:any) => handleInputChange('name', e.target.value)} placeholder="Ex: Maria Silva" />
+              <InputField label="Qual seu nome?" value={input.name} onChange={(e:any) => handleInputChange('name', e.target.value)} />
               <div className="grid grid-cols-2 gap-4">
                 <InputField label="Peso" suffix="kg" type="number" value={input.weightKg || ''} onChange={(e:any) => handleInputChange('weightKg', parseFloat(e.target.value))} />
                 <InputField label="Altura" suffix="cm" type="number" value={input.heightCm || ''} onChange={(e:any) => handleInputChange('heightCm', parseFloat(e.target.value))} />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <InputField label="Idade" type="number" value={input.age || ''} onChange={(e:any) => handleInputChange('age', parseFloat(e.target.value))} />
-                <div className="mb-4">
-                  <label className="block text-gray-700 font-bold mb-1 text-lg">Sexo</label>
-                  <select className="w-full bg-gray-50 border-2 border-gray-200 rounded-xl p-3 text-xl font-medium" value={input.sex} onChange={(e:any) => handleInputChange('sex', e.target.value)}>
-                    <option value="F">Feminino</option>
-                    <option value="M">Masculino</option>
-                    <option value="O">Outro</option>
-                  </select>
-                </div>
+                <div className="mb-4"><label className="block text-gray-700 font-bold mb-1 text-lg">Sexo</label><select className="w-full bg-gray-50 border-2 rounded-xl p-3 text-xl" value={input.sex} onChange={(e:any) => handleInputChange('sex', e.target.value)}><option value="F">Feminino</option><option value="M">Masculino</option></select></div>
               </div>
             </Card>
-            <div className="fixed bottom-0 left-0 w-full bg-white p-4 border-t flex gap-4 z-10">
-              <Button variant="secondary" className="flex-1" onClick={() => alert("Você está no início")}>Retornar</Button>
-              <Button variant="primary" className="flex-[2]" disabled={!input.name || !input.weightKg} onClick={() => setStep(2)}>Avançar <ChevronRight /></Button>
-            </div>
+            <div className="fixed bottom-0 left-0 w-full bg-white p-4 border-t flex gap-4 z-50"><Button variant="primary" className="w-full" disabled={!input.name || !input.weightKg} onClick={() => setStep(2)}>Avançar <ChevronRight /></Button></div>
           </div>
         )}
 
-        {/* STEP 2 */}
+        {/* STEP 2: PREFS */}
         {step === 2 && (
-          <div className="pt-24 pb-32 max-w-2xl mx-auto px-4">
-            <h2 className="text-2xl font-bold text-slate-800 mb-6">Preferências e Saúde</h2>
-            <Card className="mb-4">
-              <label className="block font-bold text-lg mb-2">Objetivo</label>
-              <div className="space-y-2">
-                {[{id: 'prevent', l: 'Prevenção (Padrão)'}, {id: 'moderate', l: 'Ganho Moderado'}, {id: 'aggressive', l: 'Ganho Agressivo'}].map(opt => (
-                  <div key={opt.id} onClick={() => handleInputChange('objective', opt.id)} className={`p-4 rounded-xl border-2 cursor-pointer flex justify-between ${input.objective === opt.id ? 'border-blue-600 bg-blue-50' : 'border-gray-200'}`}>
-                    <span className="font-bold">{opt.l}</span>
-                    {input.objective === opt.id && <CheckCircle className="text-blue-600" />}
-                  </div>
-                ))}
-              </div>
-            </Card>
-            <Card className="mb-4">
-               <label className="block font-bold text-lg mb-2">Refeições/dia</label>
-               <div className="flex items-center gap-4">
-                 <button onClick={() => handleInputChange('mealsPerDay', Math.max(2, input.mealsPerDay - 1))} className="w-12 h-12 bg-gray-200 rounded-full text-xl font-bold">-</button>
-                 <span className="text-2xl font-bold">{input.mealsPerDay}</span>
-                 <button onClick={() => handleInputChange('mealsPerDay', Math.min(6, input.mealsPerDay + 1))} className="w-12 h-12 bg-slate-900 text-white rounded-full text-xl font-bold">+</button>
-               </div>
-            </Card>
-            <Card className="border-red-100 bg-red-50">
-               <h3 className="font-bold text-red-800 flex items-center gap-2 mb-3"><AlertTriangle size={20}/> Condições Médicas</h3>
-               <label className="flex items-center gap-3 p-3 bg-white border border-red-100 rounded-lg mb-2"><input type="checkbox" className="w-5 h-5 accent-red-600" checked={input.medicalFlags.includes('renal_insufficiency')} onChange={() => toggleMedicalFlag('renal_insufficiency')} /><span className="font-medium">Tenho Insuficiência Renal</span></label>
-               <label className="flex items-center gap-3 p-3 bg-white border border-red-100 rounded-lg"><input type="checkbox" className="w-5 h-5 accent-blue-600" checked={input.medicalFlags.includes('diabetes')} onChange={() => toggleMedicalFlag('diabetes')} /><span className="font-medium">Tenho Diabetes</span></label>
-            </Card>
-            <div className="fixed bottom-0 left-0 w-full bg-white p-4 border-t flex gap-4 z-10">
-              <Button variant="secondary" className="flex-1" onClick={() => setStep(1)}>Retornar</Button>
-              <Button variant="primary" className="flex-[2]" onClick={checkRenalBlock}>Calcular Meta <ChevronRight /></Button>
-            </div>
+          <div className="pt-8 pb-32 max-w-2xl mx-auto px-4">
+            <h2 className="text-2xl font-bold text-slate-800 mb-6">Preferências</h2>
+            <Card className="mb-4"><label className="block font-bold text-lg mb-2">Objetivo</label><div className="space-y-2">{[{id:'prevent',l:'Prevenção'},{id:'moderate',l:'Ganho Moderado'},{id:'aggressive',l:'Ganho Agressivo'}].map(o=><div key={o.id} onClick={()=>handleInputChange('objective',o.id)} className={`p-4 rounded-xl border-2 flex justify-between cursor-pointer ${input.objective===o.id?'border-blue-600 bg-blue-50':'border-gray-200'}`}><span className="font-bold">{o.l}</span>{input.objective===o.id&&<CheckCircle className="text-blue-600"/>}</div>)}</div></Card>
+            <Card className="mb-4"><label className="block font-bold text-lg mb-2">Refeições/dia</label><div className="flex gap-4 items-center"><button onClick={()=>handleInputChange('mealsPerDay', Math.max(2,input.mealsPerDay-1))} className="w-10 h-10 bg-gray-200 rounded-full font-bold">-</button><span className="text-2xl font-bold">{input.mealsPerDay}</span><button onClick={()=>handleInputChange('mealsPerDay', Math.min(6,input.mealsPerDay+1))} className="w-10 h-10 bg-slate-900 text-white rounded-full font-bold">+</button></div></Card>
+            <Card className="border-red-100 bg-red-50"><h3 className="font-bold text-red-800 mb-3 flex gap-2"><AlertTriangle/> Condições</h3><label className="flex gap-3 p-3 bg-white rounded-lg mb-2 border"><input type="checkbox" checked={input.medicalFlags.includes('renal_insufficiency')} onChange={()=>toggleMedicalFlag('renal_insufficiency')} className="w-5 h-5 accent-red-600"/><span className="font-medium">Insuficiência Renal</span></label></Card>
+            <div className="fixed bottom-0 left-0 w-full bg-white p-4 border-t flex gap-4 z-50"><Button variant="secondary" className="flex-1" onClick={()=>setStep(1)}>Voltar</Button><Button variant="primary" className="flex-[2]" onClick={checkRenalBlock}>Calcular <ChevronRight/></Button></div>
           </div>
         )}
 
         {/* STEP 99: ERROR */}
         {step === 99 && (
-          <div className="pt-24 px-4 flex flex-col items-center text-center">
-            <AlertTriangle size={80} className="text-red-600 mb-6" />
-            <h2 className="text-2xl font-bold text-slate-900 mb-4">Atenção Médica Necessária</h2>
-            <p className="text-xl text-slate-700 mb-8 max-w-md">Para quem tem <strong>insuficiência renal</strong>, este plano não substitui orientação médica. Consulte seu nefrologista.</p>
-            <Button variant="outline" onClick={() => setStep(2)}>Retornar e Editar</Button>
+          <div className="pt-20 px-4 text-center flex flex-col items-center">
+            <AlertTriangle size={80} className="text-red-600 mb-6"/>
+            <h2 className="text-2xl font-bold mb-4">Atenção Médica</h2>
+            <p className="text-lg text-slate-600 mb-8">Para insuficiência renal, este plano não substitui orientação médica. Consulte seu nefrologista.</p>
+            <Button variant="outline" onClick={()=>setStep(2)}>Voltar</Button>
           </div>
         )}
 
         {/* STEP 3: RESULT */}
         {step === 3 && result && (
-          <div className="pt-24 pb-32 max-w-2xl mx-auto px-4 text-center">
+          <div className="pt-8 pb-32 max-w-2xl mx-auto px-4 text-center">
             <h2 className="text-xl text-slate-600 mb-4">Plano para <span className="font-bold text-slate-900">{input.name}</span></h2>
             <div className="bg-slate-900 text-white rounded-3xl p-8 shadow-xl mb-6 relative overflow-hidden">
-               <div className="relative z-10">
-                 <p className="text-blue-300 font-bold uppercase tracking-widest text-sm mb-2">Meta Proteica Diária</p>
-                 <div className="text-7xl font-extrabold mb-2">{result.proteinDaily}<span className="text-3xl font-normal text-slate-400">g</span></div>
-                 <div className="grid grid-cols-2 gap-4 border-t border-slate-700 pt-4 mt-4">
-                   <div><p className="text-3xl font-bold">{result.proteinPerMeal}g</p><p className="text-xs text-slate-400">Por refeição</p></div>
-                   <div><p className="text-3xl font-bold">{result.factor}</p><p className="text-xs text-slate-400">g/kg (Fator)</p></div>
-                 </div>
-               </div>
+               <div className="relative z-10"><p className="text-blue-300 font-bold uppercase tracking-widest text-sm mb-2">Meta Diária</p><div className="text-7xl font-extrabold mb-2">{result.proteinDaily}<span className="text-3xl font-normal text-slate-400">g</span></div><div className="grid grid-cols-2 gap-4 border-t border-slate-700 pt-4 mt-4"><div><p className="text-3xl font-bold">{result.proteinPerMeal}g</p><p className="text-xs text-slate-400">Por refeição</p></div><div><p className="text-3xl font-bold">{result.factor}</p><p className="text-xs text-slate-400">g/kg</p></div></div></div>
                <Utensils className="absolute -right-4 top-4 text-white opacity-10" size={140} />
             </div>
-            <p className="text-lg text-slate-700 mb-8">Agora vamos montar seu plano completo.</p>
-            <div className="fixed bottom-0 left-0 w-full bg-white p-4 border-t flex gap-4">
-               <Button variant="secondary" className="flex-1" onClick={() => setStep(2)}>Retornar</Button>
-               <Button variant="primary" className="flex-[2]" onClick={() => setStep(4)}>Montar Plano <ChevronRight /></Button>
-            </div>
+            <div className="fixed bottom-0 left-0 w-full bg-white p-4 border-t flex gap-4 z-50"><Button variant="secondary" className="flex-1" onClick={()=>setStep(2)}>Voltar</Button><Button variant="primary" className="flex-[2]" onClick={()=>setStep(4)}>Montar Plano <ChevronRight/></Button></div>
           </div>
         )}
 
         {/* STEP 4: FOOD */}
-        {step === 4 && result && (
-          <div className="pt-24 pb-48 max-w-3xl mx-auto px-4">
-            <div className="fixed top-[60px] left-0 w-full bg-white border-b border-gray-200 p-3 z-40 shadow-sm">
-              <div className="max-w-3xl mx-auto flex justify-between">
-                <div><span className="text-xs font-bold uppercase text-gray-500">Selecionado</span><div className={`text-xl font-bold ${totalProteinSelected < result.proteinDaily ? 'text-orange-600' : 'text-green-600'}`}>{Math.round(totalProteinSelected)} <span className="text-sm text-gray-400">/ {result.proteinDaily}g</span></div></div>
-                <div className="text-right"><span className="text-xs font-bold uppercase text-gray-500">Gap</span><div className="text-xl font-bold">{Math.max(0, Math.round(proteinGap))}g</div></div>
-              </div>
-              <div className="w-full bg-gray-200 h-1.5 mt-2 rounded-full overflow-hidden max-w-3xl mx-auto"><div className={`h-full transition-all duration-500 ${totalProteinSelected >= result.proteinDaily ? 'bg-green-500' : 'bg-orange-500'}`} style={{width: `${Math.min(100, (totalProteinSelected/result.proteinDaily)*100)}%`}} /></div>
+        {step === 4 && (
+          <div className="pt-8 pb-48 max-w-3xl mx-auto px-4">
+            <div className="fixed top-[60px] left-0 w-full bg-white border-b p-3 z-40 shadow-sm"><div className="max-w-3xl mx-auto flex justify-between mb-2"><div><span className="text-xs font-bold uppercase text-gray-500">Selecionado</span><div className={`text-xl font-bold ${totalProteinSelected < (result?.proteinDaily||0) ? 'text-orange-600' : 'text-green-600'}`}>{Math.round(totalProteinSelected)} / {result?.proteinDaily}g</div></div><div className="text-right"><span className="text-xs font-bold uppercase text-gray-500">Gap</span><div className="text-xl font-bold">{Math.max(0, Math.round(proteinGap))}g</div></div></div><div className="w-full bg-gray-200 h-1.5 rounded-full overflow-hidden"><div className={`h-full transition-all ${totalProteinSelected >= (result?.proteinDaily||0) ? 'bg-green-500' : 'bg-orange-500'}`} style={{width: `${Math.min(100, (totalProteinSelected/(result?.proteinDaily||1))*100)}%`}}/></div></div>
+            <div className="mt-24 space-y-6">
+              {[{id:'cafe',l:'Café',i:Coffee},{id:'almoco',l:'Almoço',i:Sun},{id:'snack',l:'Snacks',i:Coffee},{id:'jantar',l:'Jantar',i:Sunset}].map((m:any) => {
+                const items = plan.food.filter(i => i.meal === m.id);
+                const prot = items.reduce((acc, i) => acc + (FOOD_DB.find(f=>f.id===i.foodId)?.protein || 0)*i.portions, 0);
+                return (
+                  <Card key={m.id}>
+                    <div className="flex justify-between border-b pb-3 mb-3"><h3 className="font-bold text-lg flex gap-2 items-center"><m.i size={20}/> {m.l}</h3><span className="bg-slate-100 px-2 py-1 rounded text-sm font-bold">{prot}g prot</span></div>
+                    <div className="space-y-3 mb-4">{items.map(i => { const f = FOOD_DB.find(fo=>fo.id===i.foodId); return f ? <div key={i.foodId} className="flex justify-between items-center bg-blue-50 p-3 rounded-lg"><div><div className="font-bold">{f.name}</div><div className="text-xs text-slate-500">{f.portion} • {f.protein*i.portions}g</div></div><div className="flex gap-3 items-center"><button onClick={()=>updateFood(f.id, m.id, -1)} className="w-8 h-8 bg-white rounded-full border text-red-500 flex items-center justify-center"><Minus size={16}/></button><span className="font-bold">{i.portions}</span><button onClick={()=>updateFood(f.id, m.id, 1)} className="w-8 h-8 bg-white rounded-full border text-green-600 flex items-center justify-center"><Plus size={16}/></button></div></div> : null })}</div>
+                    <details className="group"><summary className="cursor-pointer list-none text-blue-600 font-bold bg-blue-50 p-2 rounded-lg text-center flex items-center justify-center gap-2"><Plus size={20}/> Adicionar Item</summary><div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-2 max-h-60 overflow-y-auto p-1">{FOOD_DB.map(f => <button key={f.id} onClick={()=>updateFood(f.id, m.id, 1)} className="text-left p-2 border rounded hover:bg-gray-50 flex justify-between"><div><div className="font-bold text-sm">{f.name}</div><div className="text-xs text-gray-500">{f.protein}g</div></div><Plus size={16} className="text-gray-300"/></button>)}</div></details>
+                  </Card>
+                )
+              })}
             </div>
-            <div className="mt-20">
-               {([ {id: 'cafe', l: 'Café da Manhã', i: Coffee}, {id: 'almoco', l: 'Almoço', i: Sun}, {id: 'snack', l: 'Snacks', i: Coffee}, {id: 'jantar', l: 'Jantar', i: Sunset} ] as const).map(meal => {
-                 const items = plan.food.filter(i => i.meal === meal.id);
-                 const mealProt = items.reduce((acc, i) => acc + (FOOD_DB.find(f=>f.id===i.foodId)?.protein || 0)*i.portions, 0);
-                 return (
-                   <Card key={meal.id} className="mb-6">
-                     <div className="flex justify-between items-center border-b pb-3 mb-3"><h3 className="font-bold text-lg flex items-center gap-2"><meal.i size={20}/> {meal.l}</h3><span className="bg-slate-100 px-2 py-1 rounded text-sm font-bold">{mealProt}g prot</span></div>
-                     <div className="space-y-3 mb-4">
-                       {items.map(i => {
-                         const f = FOOD_DB.find(fo => fo.id === i.foodId);
-                         if(!f) return null;
-                         return ( <div key={i.foodId} className="flex justify-between items-center bg-blue-50 p-3 rounded-lg border border-blue-100"><div><div className="font-bold">{f.name}</div><div className="text-xs text-slate-500">{f.portion} (x{i.portions}) • {f.protein*i.portions}g</div></div><div className="flex gap-3"><button onClick={() => updateFood(f.id, meal.id, -1)} className="w-8 h-8 flex items-center justify-center bg-white border rounded-full text-red-500"><Minus size={16}/></button><span className="font-bold">{i.portions}</span><button onClick={() => updateFood(f.id, meal.id, 1)} className="w-8 h-8 flex items-center justify-center bg-white border rounded-full text-green-600"><Plus size={16}/></button></div></div> )
-                       })}
-                     </div>
-                     <details className="group"><summary className="cursor-pointer list-none text-blue-600 font-bold flex items-center gap-2 bg-blue-50 p-2 rounded-lg justify-center"><Plus size={20}/> Adicionar Alimento</summary><div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-2 max-h-60 overflow-y-auto p-2">{FOOD_DB.map(f => (<button key={f.id} onClick={() => updateFood(f.id, meal.id, 1)} className="text-left p-2 border rounded hover:bg-gray-50 flex justify-between items-center"><div><div className="font-bold text-sm">{f.name}</div><div className="text-xs text-gray-500">{f.portion} • {f.protein}g</div></div><Plus size={16} className="text-gray-400"/></button>))}</div></details>
-                   </Card>
-                 )
-               })}
-            </div>
-            <div className="fixed bottom-0 left-0 w-full bg-white p-4 border-t flex gap-4 z-50">
-               <Button variant="secondary" className="flex-1" onClick={() => setStep(3)}>Retornar</Button>
-               <Button variant="primary" className="flex-[2]" onClick={() => setStep(5)}>Ir para Movimento <ChevronRight /></Button>
-            </div>
+            <div className="fixed bottom-0 left-0 w-full bg-white p-4 border-t flex gap-4 z-50"><Button variant="secondary" className="flex-1" onClick={()=>setStep(3)}>Voltar</Button><Button variant="primary" className="flex-[2]" onClick={()=>setStep(5)}>Movimento <ChevronRight/></Button></div>
           </div>
         )}
 
         {/* STEP 5: MOVEMENT */}
-        {step === 5 && result && (
-          <div className="pt-24 pb-32 max-w-2xl mx-auto px-4">
-            <h2 className="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2"><Activity className="text-green-600"/> Movimento</h2>
-            <div className="space-y-4">
-              {EXERCISE_DB.map(ex => {
-                const selected = plan.movement.includes(ex.id);
-                return (
-                  <div key={ex.id} onClick={() => toggleExercise(ex)} className={`p-4 rounded-xl border-2 cursor-pointer ${selected ? 'border-green-500 bg-green-50' : 'border-gray-200'}`}>
-                    <div className="flex justify-between"><div><h3 className="font-bold text-lg">{ex.name}</h3><p className="text-sm text-slate-600">{ex.description}</p></div>{selected ? <CheckCircle className="text-green-600"/> : <div className="w-6 h-6 border-2 border-gray-300 rounded-full"/>}</div>
-                  </div>
-                )
-              })}
-            </div>
-            <div className="fixed bottom-0 left-0 w-full bg-white p-4 border-t flex gap-4">
-               <Button variant="secondary" className="flex-1" onClick={() => setStep(4)}>Retornar</Button>
-               <Button variant="primary" className="flex-[2]" onClick={() => setStep(6)}>Ir para Descanso <ChevronRight /></Button>
-            </div>
+        {step === 5 && (
+          <div className="pt-8 pb-32 max-w-2xl mx-auto px-4">
+            <h2 className="text-2xl font-bold text-slate-800 mb-6 flex gap-2"><Activity className="text-green-600"/> Movimento</h2>
+            <div className="space-y-4">{EXERCISE_DB.map(e => { const sel = plan.movement.includes(e.id); return <div key={e.id} onClick={()=>toggleExercise(e)} className={`p-4 rounded-xl border-2 cursor-pointer flex justify-between ${sel?'border-green-500 bg-green-50':'border-gray-200'}`}><div><h3 className="font-bold text-lg">{e.name}</h3><p className="text-sm text-slate-600">{e.description}</p></div>{sel?<CheckCircle className="text-green-600"/>:<div className="w-6 h-6 border-2 rounded-full"/>}</div> })}</div>
+            <div className="fixed bottom-0 left-0 w-full bg-white p-4 border-t flex gap-4 z-50"><Button variant="secondary" className="flex-1" onClick={()=>setStep(4)}>Voltar</Button><Button variant="primary" className="flex-[2]" onClick={()=>setStep(6)}>Descanso <ChevronRight/></Button></div>
           </div>
         )}
 
         {/* STEP 6: REST */}
-        {step === 6 && result && (
-          <div className="pt-24 pb-32 max-w-2xl mx-auto px-4">
-            <h2 className="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2"><Moon className="text-indigo-600"/> Descanso & Cognição</h2>
-            <div className="space-y-4">
-              {REST_DB.map(r => {
-                const selected = plan.rest.includes(r.id);
-                return (
-                  <div key={r.id} onClick={() => toggleRest(r.id)} className={`p-4 rounded-xl border-2 cursor-pointer ${selected ? 'border-indigo-500 bg-indigo-50' : 'border-gray-200'}`}>
-                    <div className="flex justify-between"><div><h3 className="font-bold text-lg">{r.name}</h3><p className="text-sm text-slate-600">{r.description}</p></div>{selected ? <CheckCircle className="text-indigo-600"/> : <div className="w-6 h-6 border-2 border-gray-300 rounded-full"/>}</div>
-                  </div>
-                )
-              })}
-            </div>
-            <div className="fixed bottom-0 left-0 w-full bg-white p-4 border-t flex gap-4">
-               <Button variant="secondary" className="flex-1" onClick={() => setStep(5)}>Retornar</Button>
-               <Button variant="primary" className="flex-[2]" onClick={() => setStep(8)}>Concluir e Ver Resumo <ChevronRight /></Button>
-            </div>
+        {step === 6 && (
+          <div className="pt-8 pb-32 max-w-2xl mx-auto px-4">
+            <h2 className="text-2xl font-bold text-slate-800 mb-6 flex gap-2"><Moon className="text-indigo-600"/> Descanso</h2>
+            <div className="space-y-4">{REST_DB.map(r => { const sel = plan.rest.includes(r.id); return <div key={r.id} onClick={()=>toggleRest(r.id)} className={`p-4 rounded-xl border-2 cursor-pointer flex justify-between ${sel?'border-indigo-500 bg-indigo-50':'border-gray-200'}`}><div><h3 className="font-bold text-lg">{r.name}</h3><p className="text-sm text-slate-600">{r.description}</p></div>{sel?<CheckCircle className="text-indigo-600"/>:<div className="w-6 h-6 border-2 rounded-full"/>}</div> })}</div>
+            <div className="fixed bottom-0 left-0 w-full bg-white p-4 border-t flex gap-4 z-50"><Button variant="secondary" className="flex-1" onClick={()=>setStep(5)}>Voltar</Button><Button variant="primary" className="flex-[2]" onClick={()=>setStep(8)}>Resumo <ChevronRight/></Button></div>
           </div>
         )}
 
-        {/* STEP 8: SUMMARY & DOWNLOAD */}
-        {step === 8 && result && (
-          <div className="pt-24 pb-32 max-w-3xl mx-auto px-4">
-            <h2 className="text-3xl font-bold text-slate-900 mb-6 text-center">Resumo do Plano</h2>
-            <Card className="mb-6"><h3 className="text-xl font-bold mb-4 flex items-center gap-2"><Utensils className="text-blue-600"/> Alimentação</h3><div className="text-sm space-y-2">{plan.food.map((i,idx)=>{ const f=FOOD_DB.find(x=>x.id===i.foodId); return f ? <div key={idx} className="flex justify-between border-b py-1"><span>{f.name} ({i.portions}x)</span><span className="font-bold">{f.protein*i.portions}g</span></div> : null })}</div><div className="mt-4 flex justify-between font-bold text-lg"><span>Total</span><span className={proteinGap>0?'text-orange-600':'text-green-600'}>{Math.round(totalProteinSelected)}g / {result.proteinDaily}g</span></div></Card>
-            <Card className="mb-6"><h3 className="text-xl font-bold mb-4 flex items-center gap-2"><Activity className="text-green-600"/> Movimento</h3><ul className="list-disc ml-5">{plan.movement.map(id => { const ex=EXERCISE_DB.find(e=>e.id===id); return ex ? <li key={id}>{ex.name}</li> : null })}</ul></Card>
-            <Card className="mb-6"><h3 className="text-xl font-bold mb-4 flex items-center gap-2"><Moon className="text-indigo-600"/> Descanso</h3><ul className="list-disc ml-5">{plan.rest.map(id => { const r=REST_DB.find(e=>e.id===id); return r ? <li key={id}>{r.name}</li> : null })}</ul></Card>
-            
-            <div className="space-y-3">
-              <Button onClick={handleDownloadPDF} loading={isGenerating} icon={Download} variant="primary" className="w-full">Salvar PDF e Baixar</Button>
-              <div className="flex gap-3">
-                <Button onClick={resetApp} icon={RefreshCw} variant="outline" className="flex-1">Novo Plano</Button>
-                <Button onClick={handleSharePDF} loading={isGenerating} icon={Share2} variant="outline" className="flex-1">Compartilhar</Button>
-              </div>
-            </div>
+        {/* STEP 8: RESUMO */}
+        {step === 8 && (
+          <div className="pt-8 pb-40 max-w-3xl mx-auto px-4">
+            <h2 className="text-3xl font-bold text-center mb-6">Resumo do Plano</h2>
+            <Card className="mb-6"><h3 className="font-bold text-xl mb-4 flex gap-2"><Utensils className="text-blue-600"/> Alimentação</h3><div className="space-y-2 text-sm">{plan.food.map((i,x)=>{const f=FOOD_DB.find(y=>y.id===i.foodId);return f?<div key={x} className="flex justify-between border-b py-1"><span>{f.name} ({i.portions}x)</span><span className="font-bold">{f.protein*i.portions}g</span></div>:null})}</div><div className="mt-4 flex justify-between font-bold text-lg"><span>Total</span><span className={proteinGap>0?'text-orange-600':'text-green-600'}>{Math.round(totalProteinSelected)}g / {result?.proteinDaily}g</span></div></Card>
+            <Card className="mb-6"><h3 className="font-bold text-xl mb-4 flex gap-2"><Activity className="text-green-600"/> Movimento</h3><ul className="list-disc ml-5">{plan.movement.map(id=>{const e=EXERCISE_DB.find(x=>x.id===id);return e?<li key={id}>{e.name}</li>:null})}</ul></Card>
+            <Card className="mb-6"><h3 className="font-bold text-xl mb-4 flex gap-2"><Moon className="text-indigo-600"/> Descanso</h3><ul className="list-disc ml-5">{plan.rest.map(id=>{const r=REST_DB.find(x=>x.id===id);return r?<li key={id}>{r.name}</li>:null})}</ul></Card>
+            <div className="space-y-3 pb-8"><Button onClick={handleDownloadPDF} loading={isGenerating} icon={Download} className="w-full">Baixar PDF</Button><div className="flex gap-3"><Button onClick={resetApp} variant="outline" className="flex-1" icon={RefreshCw}>Novo</Button><Button onClick={handleSharePDF} loading={isGenerating} variant="outline" className="flex-1" icon={Share2}>Compartilhar</Button></div></div>
           </div>
         )}
       </div>
-
     </div>
   );
 }
