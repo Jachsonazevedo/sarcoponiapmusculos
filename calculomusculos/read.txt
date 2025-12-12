@@ -188,16 +188,30 @@ export default function App() {
     }, 500);
   };
 
+  const Header = () => (
+    <header className="fixed top-0 left-0 w-full bg-slate-900 text-white py-4 z-50 shadow-md">
+      <div className="max-w-3xl mx-auto px-4 flex items-center gap-3">
+        <Brain className="text-blue-300" size={28} />
+        <div>
+          <h1 className="font-bold text-lg leading-tight">Schola da Mente</h1>
+          <p className="text-xs text-blue-200 uppercase tracking-wider">Conectando a Mente com a Vida</p>
+        </div>
+      </div>
+    </header>
+  );
+
   useEffect(() => window.scrollTo(0,0), [step]);
+
+  // Estilo oculto para o container do PDF (Correção Solicitada)
+  const hiddenStyle = {
+    display: 'none',
+  };
 
   return (
     <div className="font-sans text-slate-900 bg-slate-50 min-h-screen relative">
       
-      {/* TEMPLATE PDF - CORREÇÃO DEFINITIVA 
-        Usando Estilos INLINE e TABELAS HTML para garantir que NADA saia do lugar.
-        Z-index negativo para ficar atrás do app, mas layout 100% visível para o html2canvas.
-      */}
-      <div style={{ position: 'fixed', top: 0, left: 0, zIndex: -50, width: '100%', height: '100%' }}>
+      {/* TEMPLATE PDF - CORREÇÃO DEFINITIVA: Container invisível sem afetar layout */}
+      <div style={hiddenStyle}>
         <div ref={pdfRef} style={{ width: '794px', minHeight: '1123px', backgroundColor: 'white', padding: '30px', fontFamily: 'Arial, sans-serif', color: '#1e293b' }}>
            
            {/* HEADER - TABLE LAYOUT */}
@@ -331,19 +345,9 @@ export default function App() {
         </div>
       </div>
 
-      {/* APP PRINCIPAL 
-        (Mantive toda a lógica do App aqui, mas omiti as repetições de lógica para focar na correção do PDF acima.
-         O código abaixo é o exato App anterior, apenas para garantir que funcione).
-      */}
+      {/* APP PRINCIPAL */}
       <div className="relative z-10 bg-slate-50 min-h-screen">
-        {step !== 99 && (
-          <header className="sticky top-0 left-0 w-full bg-slate-900 text-white py-4 z-50 shadow-md">
-            <div className="max-w-3xl mx-auto px-4 flex items-center gap-3">
-              <Brain className="text-blue-300" size={28} />
-              <div><h1 className="font-bold text-lg leading-tight">Schola da Mente</h1><p className="text-xs text-blue-200 uppercase tracking-wider">Conectando a Mente com a Vida</p></div>
-            </div>
-          </header>
-        )}
+        {step !== 99 && <Header />}
 
         {step === 1 && (
           <div className="pt-8 pb-20 max-w-2xl mx-auto px-4">
@@ -366,7 +370,6 @@ export default function App() {
           </div>
         )}
 
-        {/* [REST OF THE APP LOGIC SAME AS PREVIOUS] */}
         {step === 2 && (
           <div className="pt-8 pb-32 max-w-2xl mx-auto px-4">
             <h2 className="text-2xl font-bold text-slate-800 mb-6">Preferências</h2>
